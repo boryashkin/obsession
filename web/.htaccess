@@ -1,0 +1,22 @@
+DirectoryIndex index.php
+
+Order Allow,Deny
+Allow from all
+Options -Indexes
+
+AddDefaultCharset utf-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php
+
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /index-test.php/
+    </IfModule>
+</IfModule>
