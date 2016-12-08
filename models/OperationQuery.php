@@ -36,4 +36,12 @@ class OperationQuery extends \yii\db\ActiveQuery
     {
         return $this->queryScalar('sum(sum)', null);
     }
+
+    public function withCredits()
+    {
+        return $this->joinWith('credit')->select([
+            '{{operation}}.*',
+            '{{credit}}.returned'
+        ])->asArray();
+    }
 }

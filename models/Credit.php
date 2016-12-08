@@ -9,6 +9,8 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%credit}}".
  *
+ * @todo: date of returning
+ *
  * @property integer $id
  * @property integer $returned
  * @property string $dueDate
@@ -48,7 +50,7 @@ class Credit extends ActiveRecord
         return [
             [['creditor'], 'required'],
             [['returned', 'updated_at'], 'integer'],
-            [['dueDate'], 'date'],
+            [['dueDate'], 'date', 'format' => 'd.m.Y'],
             [['creditor'], 'string', 'max' => 255],
         ];
     }

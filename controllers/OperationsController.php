@@ -38,7 +38,7 @@ class OperationsController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Operation::find(),
+            'query' => Operation::find()->withCredits(),
             'sort' => new Sort([
                 'defaultOrder' => [
                     'id' => SORT_DESC,
@@ -96,12 +96,22 @@ class OperationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        if ($model->isCredit) {
+            $credit = $model->credit;
+        } else {
+            $credit = new Credit();
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $isLoaded = $model->load(Yii::$app->request->post());
+        if ($model->isCredit && $credit->load(Yii::$app->request->post())) {
+            $model->credit = $credit;
+        }
+        if ($isLoaded && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'credit' => $credit,
             ]);
         }
     }

@@ -16,12 +16,27 @@ use yii\helpers\ArrayHelper;
  * @property integer $salary
  * @property integer $created_at
  * @property integer $updated_at
+ * @property boolean $isCredit
  *
  * @property Credit $credit
  */
 class Operation extends ActiveRecord
 {
-    public $isCredit = false;
+    protected $_isCredit;
+
+    public function getIsCredit()
+    {
+        if ($this->_isCredit === null) {
+            $this->_isCredit = !empty($this->creditId);
+        }
+
+        return $this->_isCredit;
+    }
+
+    public function setIsCredit($isCredit)
+    {
+        $this->_isCredit = (bool)$isCredit;
+    }
 
     /**
      * @inheritdoc
@@ -109,7 +124,7 @@ class Operation extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if($insert && $this->credit) {
+        if($this->credit && ($this->credit->attributes != $this->credit->oldAttributes)) {
             //@todo: transaction
             if ($this->credit->save()) {
                 $this->creditId = $this->credit->id;
