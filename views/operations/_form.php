@@ -52,6 +52,8 @@ $this->registerJs($js);
             'pluginOptions' => [
                 'autoclose'=>true,
                 'format' => 'dd.mm.yyyy',
+                'maxView' => 3,
+                'minView' => 2,
             ]
         ]) ?>
 
@@ -59,6 +61,15 @@ $this->registerJs($js);
 
         <?= $form->field($credit, 'returned')->checkbox() ?>
     </div>
+
+    <?= $form->field($model, 'tagsArray')->widget(\kartik\select2\Select2::class, [
+        'initValueText' => '', // set the initial display text
+        'options' => [
+            'placeholder' => 'Tags',
+            'multiple' => true,
+        ],
+        'data' => \app\models\Tag::getDropdownList()
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

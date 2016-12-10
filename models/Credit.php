@@ -9,8 +9,6 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%credit}}".
  *
- * @todo: date of returning
- *
  * @property integer $id
  * @property integer $returned
  * @property string $dueDate

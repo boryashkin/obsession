@@ -3,7 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\base\InvalidValueException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
@@ -18,11 +20,64 @@ use yii\helpers\ArrayHelper;
  * @property integer $updated_at
  * @property boolean $isCredit
  *
+ * @property array $tagsArray
+ *
  * @property Credit $credit
  */
 class Operation extends ActiveRecord
 {
+    /**
+     * @var boolean
+     */
     protected $_isCredit;
+
+    /**
+     * @var array
+     */
+    protected $_tagsArray = [];
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(Tag::class, ['id' => 'tag_id'])->viaTable('operation_tag', ['operation_id' => 'id']);
+    }
+
+    public function getTagsArray()
+    {
+        if (!$this->_tagsArray) {
+            $this->_tagsArray = $this->getTags()->select('id')->column();
+        }
+
+        return $this->_tagsArray;
+    }
+
+    private function updateTags()
+    {
+        $currentIds = $this->getTags()->select('id')->column();
+        $newIds = $this->tagsArray;
+
+        foreach (array_filter(array_diff($newIds, $currentIds)) as $id) {
+            if ($item = Tag::findOne($id)) {
+                $this->link('tags', $item);
+            }
+        }
+        foreach (array_filter(array_diff($currentIds, $newIds)) as $id) {
+            if ($item = Tag::findOne($id)) {
+                $this->unlink('tags', $item, true);
+            }
+        }
+    }
+
+    public function setTagsArray($tags)
+    {
+        if (!is_array($tags)) {
+            throw new InvalidValueException('is should be an array');
+        }
+
+        $this->_tagsArray = $tags;
+    }
 
     public function getIsCredit()
     {
@@ -69,6 +124,7 @@ class Operation extends ActiveRecord
             ['isCredit', 'boolean'],
             ['creditId', 'integer'],
             [['sum'], 'number'],
+            ['tagsArray', 'safe'],
             [['salary', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string', 'max' => 255],
         ];
@@ -135,5 +191,12 @@ class Operation extends ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->updateTags();
     }
 }
