@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <h3>На счету: <?= (new \app\models\Operation())->getBalance() ?></h3>
+    <h3>На счету: <?= (new \app\modules\wallet\models\Operation())->getBalance() ?></h3>
 
     <p>
         <?= Html::a('Create Operation', ['create'], ['class' => 'btn btn-success']) ?>
@@ -24,6 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
             if ($model['returned'] === '0') {
                 return ['class' => 'danger'];
             }
+            if ($model['isSalary']) {
+                return ['class' => 'success'];
+            }
         },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -31,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'sum',
             'description',
-            'salary:boolean',
+            'isSalary:boolean',
             'credit.dueDate',
             // 'created_at',
             [

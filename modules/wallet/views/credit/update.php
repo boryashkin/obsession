@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Credit */
+/* @var $model app\modules\wallet\models\Credit */
 
 $this->title = 'Update Credit: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Credits', 'url' => ['index']];

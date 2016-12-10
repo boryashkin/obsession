@@ -12,7 +12,7 @@ class m161207_180340_operation extends Migration
             'id' => $this->primaryKey(),
             'sum' => $this->decimal(10, 2)->notNull(),
             'description' => $this->string(),
-            'salary' => $this->boolean()->notNull()->defaultValue(false),
+            'isSalary' => $this->boolean()->notNull()->defaultValue(false),
             'creditId' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),

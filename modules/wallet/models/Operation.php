@@ -1,13 +1,13 @@
 <?php
 
-namespace app\models;
+namespace app\modules\wallet\models;
 
+use app\models\Tag;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%operation}}".
@@ -15,10 +15,11 @@ use yii\helpers\ArrayHelper;
  * @property integer $id
  * @property string $sum
  * @property string $description
- * @property integer $salary
+ * @property integer $isSalary
  * @property integer $created_at
  * @property integer $updated_at
  * @property boolean $isCredit
+ * @property integer $creditId
  *
  * @property array $tagsArray
  *
@@ -72,8 +73,10 @@ class Operation extends ActiveRecord
 
     public function setTagsArray($tags)
     {
-        if (!is_array($tags)) {
+        if ($tags && !is_array($tags)) {
             throw new InvalidValueException('is should be an array');
+        } elseif (!$tags) {
+            $tags = [];
         }
 
         $this->_tagsArray = $tags;
@@ -121,11 +124,11 @@ class Operation extends ActiveRecord
     {
         return [
             [['sum'], 'required'],
-            ['isCredit', 'boolean'],
+            [['isSalary', 'isCredit'], 'boolean'],
             ['creditId', 'integer'],
             [['sum'], 'number'],
             ['tagsArray', 'safe'],
-            [['salary', 'created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at'], 'integer'],
             [['description'], 'string', 'max' => 255],
         ];
     }
@@ -139,10 +142,11 @@ class Operation extends ActiveRecord
             'id' => 'ID',
             'sum' => 'Sum',
             'description' => 'Description',
-            'salary' => 'Salary',
+            'isSalary' => 'Is salary',
             'creditId' => 'Credit',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'tagsArray' => 'Tags',
         ];
     }
 
@@ -180,14 +184,13 @@ class Operation extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if($this->credit && ($this->credit->attributes != $this->credit->oldAttributes)) {
+        if ($this->credit && ($this->credit->attributes != $this->credit->oldAttributes)) {
             //@todo: transaction
             if ($this->credit->save()) {
                 $this->creditId = $this->credit->id;
             } else {
                 return false;
             }
-            
         }
 
         return parent::beforeSave($insert);

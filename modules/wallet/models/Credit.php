@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\modules\wallet\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -19,6 +19,11 @@ use yii\db\ActiveRecord;
  */
 class Credit extends ActiveRecord
 {
+    /**
+     * Критическое количество дней до выплаты долга
+     */
+    const WARNING_NUM_DAYS = 3;
+
     /**
      * @inheritdoc
      */
@@ -48,7 +53,12 @@ class Credit extends ActiveRecord
         return [
             [['creditor'], 'required'],
             [['returned', 'updated_at'], 'integer'],
-            [['dueDate'], 'date', 'format' => 'd.m.Y'],
+            [['dueDate'], 'date', 'format' => 'php:d.m.Y'],
+            [
+                'dueDate', 'filter', 'filter' => function ($value) {
+                    return date('Y-m-d H:i:s', strtotime($value));
+                },
+            ],
             [['creditor'], 'string', 'max' => 255],
         ];
     }

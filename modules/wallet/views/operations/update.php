@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model app\models\Operation */
+/* @var $model app\modules\wallet\models\Operation */
 
-$this->title = 'Create Operation';
+$this->title = 'Update Operation: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Operations', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="operation-create">
+<div class="operation-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\wallet\models\Operation;
 use Yii;
 use yii\helpers\ArrayHelper;
 

@@ -1,20 +1,18 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\wallet\controllers;
 
-use app\models\Credit;
 use Yii;
-use app\models\Operation;
+use app\modules\wallet\models\Credit;
 use yii\data\ActiveDataProvider;
-use yii\data\Sort;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * OperationsController implements the CRUD actions for Operation model.
+ * CreditController implements the CRUD actions for Credit model.
  */
-class OperationsController extends Controller
+class CreditController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,18 +30,13 @@ class OperationsController extends Controller
     }
 
     /**
-     * Lists all Operation models.
+     * Lists all Credit models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Operation::find()->withCredits(),
-            'sort' => new Sort([
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ],
-            ]),
+            'query' => Credit::find(),
         ]);
 
         return $this->render('index', [
@@ -52,7 +45,7 @@ class OperationsController extends Controller
     }
 
     /**
-     * Displays a single Operation model.
+     * Displays a single Credit model.
      * @param integer $id
      * @return mixed
      */
@@ -64,31 +57,25 @@ class OperationsController extends Controller
     }
 
     /**
-     * Creates a new Operation model.
+     * Creates a new Credit model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Operation();
-        $credit = new Credit();
+        $model = new Credit();
 
-        $isLoaded = $model->load(Yii::$app->request->post());
-        if ($model->isCredit && $credit->load(Yii::$app->request->post())) {
-            $model->credit = $credit;
-        }
-        if ($isLoaded && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'credit' => $credit,
             ]);
         }
     }
 
     /**
-     * Updates an existing Operation model.
+     * Updates an existing Credit model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,28 +83,18 @@ class OperationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if ($model->isCredit) {
-            $credit = $model->credit;
-        } else {
-            $credit = new Credit();
-        }
 
-        $isLoaded = $model->load(Yii::$app->request->post());
-        if ($model->isCredit && $credit->load(Yii::$app->request->post())) {
-            $model->credit = $credit;
-        }
-        if ($isLoaded && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'credit' => $credit,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Operation model.
+     * Deletes an existing Credit model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -130,15 +107,15 @@ class OperationsController extends Controller
     }
 
     /**
-     * Finds the Operation model based on its primary key value.
+     * Finds the Credit model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Operation the loaded model
+     * @return Credit the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Operation::findOne($id)) !== null) {
+        if (($model = Credit::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

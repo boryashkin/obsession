@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\modules\wallet\models;
 
 /**
  * This is the ActiveQuery class for [[Credit]].
@@ -30,5 +30,13 @@ class CreditQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function withOperationId()
+    {
+        return $this->joinWith('operation')->select([
+            '{{credit}}.*',
+            '{{operation}}.id as operationId',
+        ])->asArray();
     }
 }

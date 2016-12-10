@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Operation */
+/* @var $model app\modules\wallet\models\Operation */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Operations', 'url' => ['index']];
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'sum',
             'description',
-            'salary',
+            'isSalary',
             'credit.dueDate',
             'created_at',
             'updated_at',

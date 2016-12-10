@@ -42,8 +42,13 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => '/operations/index',
+                
             ],
+        ],
+    ],
+    'modules' => [
+        'wallet' => [
+            'class' => 'app\modules\wallet\Module',
         ],
     ],
     'params' => $params,

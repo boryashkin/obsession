@@ -5,8 +5,8 @@ use yii\widgets\ActiveForm;
 use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Operation */
-/* @var $credit app\models\Credit */
+/* @var $model app\modules\wallet\models\Operation */
+/* @var $credit app\modules\wallet\models\Credit */
 /* @var $form yii\widgets\ActiveForm */
 $js = <<<'JS'
 
@@ -40,7 +40,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'salary')->checkbox() ?>
+    <?= $form->field($model, 'isSalary')->checkbox() ?>
 
     <?= $form->field($model, 'isCredit')->checkbox() ?>
 
@@ -70,8 +70,11 @@ $this->registerJs($js);
         ],
         'data' => \app\models\Tag::getDropdownList()
     ]); ?>
+    <?= Html::a('Add tag', Yii::$app->urlManager->createUrl('/tags/create'), [
+        'target' => '_blank',
+    ]) ?>
 
-    <div class="form-group">
+    <div class="form-group text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

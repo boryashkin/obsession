@@ -11,6 +11,8 @@ class m161210_041202_tag extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
         ], $tableOptions);
+
+        $this->createIndex('idx-tag-unique', 'tag', ['name'], true);
     }
 
     public function down()
