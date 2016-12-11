@@ -3,10 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\modules\wallet\models\Credit;
+use app\modules\wallet\models\Operation;
 
 /* @var $this yii\web\View */
 /* @var $operationsProvider yii\data\ActiveDataProvider */
 /* @var $creditsProvider yii\data\ActiveDataProvider */
+/* @var $sumOfCredits float */
 
 $this->title = 'Wallet';
 $this->params['breadcrumbs'][] = $this->title;
@@ -15,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <h3>На счету: <?= (new \app\modules\wallet\models\Operation())->getBalance() ?></h3>
+    <h3>Balance: <?= (new Operation())->getBalance() ?></h3>
 
     <div class="container">
         <div class="row text-right">
@@ -25,10 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row">
             <div class="credits-wrapper col-xs-6">
-                <h4>Credits</h4>
+                <h4>Debts</h4>
                 <?= GridView::widget([
                     'dataProvider' => $creditsProvider,
-                    'rowOptions'=>function($model){
+                    'rowOptions'=> function($model) {
                         /** @var Credit $model */
                         $due = new DateTime($model['dueDate']);
                         $now = new DateTime();
@@ -39,15 +41,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             return ['class' => 'danger'];
                         }
 
+                        return null;
                     },
+                    'showFooter' => true,
+                    'footerRowOptions' => ['class' => 'active'],
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
                         'id',
-                        'creditor',
+                        [
+                            'attribute' => 'creditor',
+                            'footer' => 'Total:',
+                        ],
+                        [
+                            'attribute' => 'sum',
+                            'format' => 'decimal',
+                            'footer' => number_format($sumOfCredits),
+                        ],
                         [
                             'attribute' => 'dueDate',
-                            'format' => ['dateTime']
+                            'format' => ['dateTime', 'php:d.m.Y']
                         ],
 
                         [
@@ -96,11 +109,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $color = $model['sum'] < 0 ? 'red' : 'green';
                                 return ['style' => 'color: ' . $color . ';'];
                             },
+                            'format' => 'decimal',
                         ],
                         'description',
                         [
                             'attribute' => 'updated_at',
-                            'format' => ['dateTime']
+                            'format' => ['dateTime', 'php:d.m.Y']
                         ],
 
                         [

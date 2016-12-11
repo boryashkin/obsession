@@ -7,6 +7,7 @@ use Yii;
 use app\modules\wallet\models\Operation;
 use yii\data\ActiveDataProvider;
 use yii\data\Sort;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -16,6 +17,24 @@ use yii\filters\VerbFilter;
  */
 class IndexController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * Lists all Operation models.
      * @return mixed
@@ -30,8 +49,10 @@ class IndexController extends Controller
                 ],
             ]),
         ]);
+        $sumOfCredits = Credit::find()->sumOfCredits();
         $creditsProvider = new ActiveDataProvider([
-            'query' => Credit::find()->where(['returned' => false])->withOperationId(),
+            'query' => Credit::find()->where(['returned' => false])
+                ->withOperationId()->orderBy(['dueDate' => SORT_ASC]),
             'sort' => new Sort([
                 'defaultOrder' => [
                     'id' => SORT_DESC,
@@ -39,9 +60,6 @@ class IndexController extends Controller
             ]),
         ]);
 
-        return $this->render('index', [
-            'operationsProvider' => $operationsProvider,
-            'creditsProvider' => $creditsProvider,
-        ]);
+        return $this->render('index', compact('operationsProvider','creditsProvider','sumOfCredits'));
     }
 }

@@ -7,6 +7,7 @@ use Yii;
 use app\modules\wallet\models\Operation;
 use yii\data\ActiveDataProvider;
 use yii\data\Sort;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,6 +23,15 @@ class OperationsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -78,7 +88,7 @@ class OperationsController extends Controller
             $model->credit = $credit;
         }
         if ($isLoaded && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/wallet']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -107,7 +117,7 @@ class OperationsController extends Controller
             $model->credit = $credit;
         }
         if ($isLoaded && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/wallet']);
         } else {
             return $this->render('update', [
                 'model' => $model,

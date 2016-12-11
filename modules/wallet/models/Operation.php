@@ -104,6 +104,9 @@ class Operation extends ActiveRecord
         return '{{%operation}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
