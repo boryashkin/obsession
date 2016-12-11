@@ -196,14 +196,12 @@ $this->registerCss('.ttl-sec {font-size: 0.7em;}')
                     </button>
                 </div>
             </div>
-            <?php if (!$activity->activeTrack) : ?>
-                <div class="row">
-                    <div class="col-xs-6 form-group ">
-                        <label></label>
-                        <input id="note-<?= $activity->id ?>" type="text" class="input-lg form-control" placeholder="Note about the future track"/>
-                    </div>
+            <div class="row">
+                <div class="col-xs-6 form-group ">
+                    <label></label>
+                    <input id="note-<?= $activity->id ?>"<?php if ($activity->activeTrack) : ?> style="display: none;"<?php endif; ?> type="text" class="input-lg form-control" placeholder="Note about the future track"/>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
