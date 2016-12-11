@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property integer $creditId
  *
  * @property array $tagsArray
+ * @property integer $toCreditId
  *
  * @property Credit $credit
  */
@@ -31,11 +32,74 @@ class Operation extends ActiveRecord
      * @var boolean
      */
     protected $_isCredit;
+    /**
+     * Link this operation to the existing credit
+     *
+     * @var integer
+     */
+    public $toCreditId;
 
     /**
      * @var array
      */
     protected $_tagsArray = [];
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%operation}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['sum'], 'required'],
+            [['isSalary', 'isCredit'], 'boolean'],
+            [['creditId', 'toCreditId'], 'integer'],
+            [['sum'], 'number'],
+            ['tagsArray', 'safe'],
+            [['created_at', 'updated_at'], 'integer'],
+            [['description'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'sum' => 'Sum',
+            'description' => 'Description',
+            'isSalary' => 'Is salary',
+            'creditId' => 'Credit',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'tagsArray' => 'Tags',
+        ];
+    }
 
     /**
      * @return ActiveQuery
@@ -97,63 +161,6 @@ class Operation extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%operation}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['sum'], 'required'],
-            [['isSalary', 'isCredit'], 'boolean'],
-            ['creditId', 'integer'],
-            [['sum'], 'number'],
-            ['tagsArray', 'safe'],
-            [['created_at', 'updated_at'], 'integer'],
-            [['description'], 'string', 'max' => 255],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'sum' => 'Sum',
-            'description' => 'Description',
-            'isSalary' => 'Is salary',
-            'creditId' => 'Credit',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'tagsArray' => 'Tags',
-        ];
-    }
-
-    /**
      * @return Credit
      */
     public function getCredit()
@@ -187,7 +194,7 @@ class Operation extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($this->credit && ($this->credit->attributes != $this->credit->oldAttributes)) {
+        if ($this->isCredit && !$this->toCreditId && ($this->credit->attributes != $this->credit->oldAttributes)) {
             //@todo: transaction
             if ($this->credit->save()) {
                 $this->creditId = $this->credit->id;

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\datetime\DateTimePicker;
+use app\modules\wallet\models\Credit;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\wallet\models\Operation */
@@ -44,23 +45,40 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'isCredit')->checkbox() ?>
 
+    <!-- Debt values -->
     <div id="credit-form"<?php if (!$model->isCredit) : ?> style="display: none;"<?php endif; ?>>
-        <?= $form->field($credit, 'dueDate')->widget(DateTimePicker::class, [
-            'options' => [
-                'class' => 'form-control input-sm',
-            ],
-            'pluginOptions' => [
-                'autoclose'=>true,
-                'format' => 'dd.mm.yyyy',
-                'maxView' => 3,
-                'minView' => 2,
-            ]
-        ]) ?>
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">New</a></li>
+            <li role="presentation"><a href="#existing" aria-controls="existing" role="tab" data-toggle="tab">Existing</a></li>
+        </ul>
 
-        <?= $form->field($credit, 'creditor')->textInput(['maxlength' => true]) ?>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="new">
+                <?= $form->field($credit, 'dueDate')->widget(DateTimePicker::class, [
+                    'options' => [
+                        'class' => 'form-control input-sm',
+                    ],
+                    'pluginOptions' => [
+                        'autoclose'=>true,
+                        'format' => 'dd.mm.yyyy',
+                        'maxView' => 3,
+                        'minView' => 2,
+                    ]
+                ]) ?>
 
-        <?= $form->field($credit, 'returned')->checkbox() ?>
+                <?= $form->field($credit, 'creditor')->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($credit, 'returned')->checkbox() ?>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="existing">
+                <?= $form->field($model, 'toCreditId')->dropDownList(Credit::find()->select(['creditor', 'id'])->indexBy('id')->asArray()->column()) ?>
+            </div>
+        </div>
+
+
     </div>
+    <!-- //Debt values -->
 
     <?= $form->field($model, 'tagsArray')->widget(\kartik\select2\Select2::class, [
         'initValueText' => '', // set the initial display text

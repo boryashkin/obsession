@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\wallet\models\Credit */
@@ -12,9 +13,19 @@ use yii\widgets\ActiveForm;
     
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'returned')->textInput() ?>
+    <?= $form->field($model, 'returned')->checkbox() ?>
 
-    <?= $form->field($model, 'dueDate')->textInput() ?>
+    <?= $form->field($model, 'dueDate')->widget(DateTimePicker::class, [
+        'options' => [
+            'class' => 'form-control input-sm',
+        ],
+        'pluginOptions' => [
+            'autoclose'=>true,
+            'format' => 'dd.mm.yyyy',
+            'maxView' => 3,
+            'minView' => 2,
+        ]
+    ]) ?>
 
     <?= $form->field($model, 'creditor')->textInput(['maxlength' => true]) ?>
 

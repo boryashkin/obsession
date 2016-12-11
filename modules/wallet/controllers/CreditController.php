@@ -2,9 +2,11 @@
 
 namespace app\modules\wallet\controllers;
 
+use app\modules\wallet\models\Operation;
 use Yii;
 use app\modules\wallet\models\Credit;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -92,13 +94,15 @@ class CreditController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $operations = new ActiveDataProvider([
+            'query' => Operation::find()->where(['creditId' => $id]),
+            'pagination' => false,
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', compact('model', 'operations'));
         }
     }
 

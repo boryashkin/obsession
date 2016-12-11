@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $creditor
  * @property integer $updated_at
  *
- * @property Operation $operation
+ * @property Operation[] $operations
  */
 class Credit extends ActiveRecord
 {
@@ -80,9 +80,9 @@ class Credit extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOperation()
+    public function getOperations()
     {
-        return $this->hasOne(Operation::className(), ['creditId' => 'id']);
+        return $this->hasMany(Operation::className(), ['creditId' => 'id']);
     }
 
     /**

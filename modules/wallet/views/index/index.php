@@ -66,8 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'class' => 'yii\grid\ActionColumn',
                             'template' => '{update}',
-                            'controller' => 'operations',
-                            'buttons' => [
+                            'controller' => 'credit',
+                            /*'buttons' => [
                                 'update' => function ($url, $model, $key) {
 
                                     $url = Yii::$app->urlManager->createUrl([
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]);
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                                 },
-                            ],
+                            ],*/
                         ],
                     ],
                 ]); ?>

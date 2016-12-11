@@ -85,7 +85,19 @@ class OperationsController extends Controller
 
         $isLoaded = $model->load(Yii::$app->request->post());
         if ($model->isCredit && $credit->load(Yii::$app->request->post())) {
-            $model->credit = $credit;
+            if (!$model->toCreditId) {
+                //new credit
+                $model->credit = $credit;
+            } else {
+                //link to existing credit
+                $credit = Credit::findOne($model->toCreditId);
+                if (!$credit) {
+                    $model->addError('toCreditId', 'Credit does not exist');
+                } else {
+                    $model->creditId = $credit->id;
+                }
+            }
+
         }
         if ($isLoaded && $model->save()) {
             return $this->redirect(['/wallet']);

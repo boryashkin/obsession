@@ -40,10 +40,11 @@ class CreditQuery extends \yii\db\ActiveQuery
      */
     public function withOperationId()
     {
-        return $this->joinWith('operation')->select([
+        return $this->joinWith('operations')->select([
             '{{credit}}.*',
-            '{{operation}}.id as operationId, {{operation}}.sum',
-        ])->asArray();
+            '{{operation}}.id as operationId',
+            new Expression('sum({{operation}}.sum) as sum'),
+        ])->groupBy(['credit.id'])->asArray();
     }
 
     /**
@@ -53,7 +54,7 @@ class CreditQuery extends \yii\db\ActiveQuery
      */
     public function sumOfCredits()
     {
-        return (float)$this->joinWith('operation')
+        return (float)$this->joinWith('operations')
             ->where(['returned' => false])->queryScalar(new Expression('sum({{operation}}.sum)'), null);
     }
 }
