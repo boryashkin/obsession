@@ -28,7 +28,7 @@ $this->title = 'Obsession app';
 
                 <p>Time management.</p>
 
-                <p><?= Html::a('soon...', '#', ['class' => 'btn btn-default']) ?></p>
+                <p><?= Html::a('Time', Yii::$app->urlManager->createUrl('time'), ['class' => 'btn btn-default']) ?></p>
             </div>
             <div class="col-lg-4">
                 <h2>Relations</h2>

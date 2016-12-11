@@ -53,6 +53,9 @@ $config = [
         'wallet' => [
             'class' => 'app\modules\wallet\Module',
         ],
+        'time' => [
+            'class' => 'app\modules\time\Module',
+        ],
     ],
     'params' => $params,
 ];
