@@ -14,7 +14,7 @@ use yii\web\Response;
 /**
  * TracksController implements the CRUD actions for TimeTrack model.
  *
- * @todo: updates for "note" field
+ * @todo: updates for "note" field when time still going
  * @todo: refactor
  */
 class TracksController extends Controller

@@ -2,7 +2,7 @@
 /* @var $this yii\web\View */
 /* @var $activities Activity[] */
 /* @var $tracks TimeTrack[] */
-//@todo: refactor; note-field; ajax refreshing for each activity-element
+//@todo: refactor; ajax refreshing for each activity-element
 
 use app\modules\time\models\Activity;
 use app\modules\time\models\TimeTrack;
@@ -71,13 +71,15 @@ var interval = setInterval(function() {
 
 $('.btn-start').click(function(){
     var $this = $(this),
-        aid = $this.attr('data-id');
+        aid = $this.attr('data-id'),
+        $noteField = $('#note-' + aid),
+        note = $noteField.val();
     $this.attr('disabled', true);
     
     $.ajax({
         method: "POST",
         url: urlStart,
-        data: { activityId: aid },
+        data: { activityId: aid, note: note },
         dataType: "json",
         complete: function(resp) {
             
@@ -87,6 +89,7 @@ $('.btn-start').click(function(){
             if (response.status == true) {
                 $('#stop-' + aid).attr('disabled', false).attr('data-track-id', response.trackId);
                 $('#track-' + aid).attr('data-timestamp', response.timestamp);
+                $noteField.hide();
                 addNewClock(aid, response.timestamp);
             } else {
                 $this.attr('disabled', false);
@@ -108,7 +111,8 @@ $('.btn-start').click(function(){
 $('.btn-stop').click(function(){
     var $this = $(this),
         aid = $this.attr('data-id'),
-        trackId = $this.attr('data-track-id');
+        trackId = $this.attr('data-track-id'),
+        $noteField = $('#note-' + aid);
     $this.attr('disabled', true);
     
     $.ajax({
@@ -122,6 +126,7 @@ $('.btn-stop').click(function(){
                 $this.attr('data-track-id', '');
                 removeClock(aid);
                 $('#track-' + aid).attr('data-timestamp', '').text('');
+                $noteField.val('').show();
             } else {
                 $this.attr('disabled', false);
                 var errors = '';
@@ -191,6 +196,14 @@ $this->registerCss('.ttl-sec {font-size: 0.7em;}')
                     </button>
                 </div>
             </div>
+            <?php if (!$activity->activeTrack) : ?>
+                <div class="row">
+                    <div class="col-xs-6 form-group ">
+                        <label></label>
+                        <input id="note-<?= $activity->id ?>" type="text" class="input-lg form-control" placeholder="Note about the future track"/>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
