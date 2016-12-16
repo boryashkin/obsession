@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
         </div>
         <div class="row">
-            <div class="credits-wrapper col-xs-6">
+            <div class="credits-wrapper col-xs-12 col-md-6">
                 <h4>Debts</h4>
                 <?= GridView::widget([
                     'dataProvider' => $creditsProvider,
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]); ?>
             </div>
-            <div class="operations-wrapper col-xs-6">
+            <div class="operations-wrapper col-xs-12 col-md-6">
                 <h4>History</h4>
                 <?= GridView::widget([
                     'dataProvider' => $operationsProvider,

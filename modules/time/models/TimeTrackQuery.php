@@ -2,6 +2,7 @@
 
 namespace app\modules\time\models;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * This is the ActiveQuery class for [[TimeTrack]].
@@ -31,5 +32,27 @@ class TimeTrackQuery extends ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    /**
+     * @return array
+     */
+    public function getStat()
+    {
+        return $this->select([
+            'timeTrack.id as id',
+            'name',
+            'activityId',
+            new Expression('DATE(start) as date'),
+            new Expression('sum(TIMESTAMPDIFF(SECOND, start, stop)) sum'),
+        ])
+            ->leftJoin('activity', 'timeTrack.activityId = activity.id')
+            ->where(['NOT', ['stop' => null]])
+            ->groupBy([
+                'date',
+                'activityId',
+            ])
+            ->indexBy('id')
+            ->asArray()->all();
     }
 }

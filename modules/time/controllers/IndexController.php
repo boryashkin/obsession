@@ -41,4 +41,16 @@ class IndexController extends Controller
 
         return $this->render('index', compact('activities', 'tracks'));
     }
+
+    /**
+     * Statistics
+     *
+     * @return mixed
+     */
+    public function actionStat()
+    {
+        $stat = TimeTrack::find()->getStat();
+        
+        return $this->render('stat', compact('stat'));
+    }
 }

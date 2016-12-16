@@ -7,7 +7,7 @@
 use app\modules\time\models\Activity;
 use app\modules\time\models\TimeTrack;
 
-$this->title = 'Wallet';
+$this->title = 'Time';
 $this->params['breadcrumbs'][] = $this->title;
 
 $urlStart = Yii::$app->urlManager->createUrl('/time/tracks/create');
@@ -149,6 +149,8 @@ JS;
 $this->registerJs($js);
 $this->registerCss('.ttl-sec {font-size: 0.7em;}')
 ?>
+<?= \yii\bootstrap\Html::a('Daily stat', Yii::$app->urlManager->createUrl(['time/stat'])) ?>
+<hr>
 <?php if ($activities) : ?>
     <?php foreach ($activities as $activity) : ?>
         <div class="container-fluid activity-container" id="activity-<?= $activity->id ?>" data-id="<?= $activity->id ?>">

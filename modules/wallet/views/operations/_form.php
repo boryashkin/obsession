@@ -61,7 +61,7 @@ $this->registerJs($js);
                     ],
                     'pluginOptions' => [
                         'autoclose'=>true,
-                        'format' => 'dd.mm.yyyy',
+                        'format' => 'yyyy-mm-dd',
                         'maxView' => 3,
                         'minView' => 2,
                     ]
@@ -72,7 +72,7 @@ $this->registerJs($js);
                 <?= $form->field($credit, 'returned')->checkbox() ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="existing">
-                <?= $form->field($model, 'toCreditId')->dropDownList(Credit::find()->select(['creditor', 'id'])->indexBy('id')->asArray()->column()) ?>
+                <?= $form->field($model, 'toCreditId')->dropDownList(Credit::find()->select(['creditor', 'id'])->indexBy('id')->asArray()->column(), ['prompt'=>'Creditor']) ?>
             </div>
         </div>
 

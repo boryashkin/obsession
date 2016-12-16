@@ -45,7 +45,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-
+                '/time/stat' => '/time/index/stat',
             ],
         ],
     ],

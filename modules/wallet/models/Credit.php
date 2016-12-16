@@ -53,7 +53,7 @@ class Credit extends ActiveRecord
         return [
             [['creditor'], 'required'],
             [['returned', 'updated_at'], 'integer'],
-            [['dueDate'], 'date', 'format' => 'php:d.m.Y'],
+            [['dueDate'], 'date', 'format' => 'php:Y-m-d'],
             [
                 'dueDate', 'filter', 'filter' => function ($value) {
                     return date('Y-m-d H:i:s', strtotime($value));

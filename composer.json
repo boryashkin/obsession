@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kartik-v/yii2-widget-datetimepicker": "1.4.*",
-        "kartik-v/yii2-widget-select2": "2.*"
+        "kartik-v/yii2-widget-select2": "2.*",
+        "miloschuman/yii2-highcharts-widget": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

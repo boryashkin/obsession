@@ -40,6 +40,7 @@ AppAsset::register($this);
             ['label' => 'Wallet', 'url' => ['/wallet']],
             ['label' => 'Tags', 'url' => ['/tags']],
             ['label' => 'Users', 'url' => ['/users']],
+            ['label' => 'Activities', 'url' => ['/time/activities']],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
