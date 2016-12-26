@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
         <div class="row">
             <div class="credits-wrapper col-xs-12 col-md-6">
-                <h4>Debts</h4>
                 <?= GridView::widget([
                     'dataProvider' => $provider,
 
