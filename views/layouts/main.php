@@ -38,6 +38,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Wallet', 'url' => ['/wallet']],
+            ['label' => 'Time', 'url' => ['/time']],
             ['label' => 'Tags', 'url' => ['/tags']],
             ['label' => 'Users', 'url' => ['/users']],
             ['label' => 'Activities', 'url' => ['/time/activities']],
