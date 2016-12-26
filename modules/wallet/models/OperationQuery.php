@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\wallet\models;
+use yii\db\Expression;
 
 /**
  * This is the ActiveQuery class for [[Operation]].
@@ -43,5 +44,19 @@ class OperationQuery extends \yii\db\ActiveQuery
             '{{operation}}.*',
             '{{credit}}.returned'
         ])->asArray();
+    }
+
+    /**
+     * Sum by tags
+     *
+     * @return Operation[]|array
+     */
+    public function getTagTotals()
+    {
+        return $this->joinWith('tags')->select([
+            '{{tag}}.id',
+            '{{tag}}.name',
+            new Expression('SUM({{operation}}.sum) as sum'),
+        ])->groupBy('{{tag}}.id')->asArray()->all();
     }
 }

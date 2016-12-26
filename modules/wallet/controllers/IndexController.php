@@ -6,6 +6,7 @@ use app\modules\wallet\models\Credit;
 use Yii;
 use app\modules\wallet\models\Operation;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\data\Sort;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -48,6 +49,7 @@ class IndexController extends Controller
                     'id' => SORT_DESC,
                 ],
             ]),
+            'pagination' => false,
         ]);
         $sumOfCredits = Credit::find()->sumOfCredits();
         $creditsProvider = new ActiveDataProvider([
@@ -61,5 +63,15 @@ class IndexController extends Controller
         ]);
 
         return $this->render('index', compact('operationsProvider','creditsProvider','sumOfCredits'));
+    }
+
+    public function actionStat()
+    {
+        $provider = new ArrayDataProvider([
+            'allModels' => Operation::find()->getTagTotals(),
+            'pagination' => false,
+        ]);
+
+        return $this->render('stat', compact('provider'));
     }
 }
