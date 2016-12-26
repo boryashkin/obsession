@@ -57,6 +57,9 @@ class OperationQuery extends \yii\db\ActiveQuery
             '{{tag}}.id',
             '{{tag}}.name',
             new Expression('SUM({{operation}}.sum) as sum'),
-        ])->groupBy('{{tag}}.id')->asArray()->all();
+        ])
+            ->where('{{operation}}.sum < 0 AND {{operation.creditId}} IS NOT NULL')
+            ->orWhere('{{operation}}.creditId IS NULL')
+            ->groupBy('{{tag}}.id')->asArray()->all();
     }
 }
