@@ -7,6 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\wallet\models\Credit */
 
 $this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Wallet', 'url' => ['/wallet']];
 $this->params['breadcrumbs'][] = ['label' => 'Credits', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

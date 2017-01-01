@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\modules\wallet\models\Operation */
 
 $this->title = 'Update Operation: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Wallet', 'url' => ['/wallet']];
 $this->params['breadcrumbs'][] = ['label' => 'Operations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Operations';
+$this->params['breadcrumbs'][] = ['label' => 'Wallet', 'url' => ['/wallet']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="operation-index">

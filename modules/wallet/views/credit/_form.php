@@ -21,7 +21,7 @@ use kartik\datetime\DateTimePicker;
         ],
         'pluginOptions' => [
             'autoclose'=>true,
-            'format' => 'dd.mm.yyyy',
+            'format' => 'yyyy-mm-dd',
             'maxView' => 3,
             'minView' => 2,
         ]
