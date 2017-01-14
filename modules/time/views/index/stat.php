@@ -74,4 +74,4 @@ $series = array_values($series);
 ]) ?>
 
 <hr>
-<?= \yii\bootstrap\Html::a('< Back to timers', Yii::$app->urlManager->createUrl('time')) ?>
+<?= \yii\bootstrap\Html::a('< Back to timers', ['index'], ['class' => 'btn btn-default']) ?>

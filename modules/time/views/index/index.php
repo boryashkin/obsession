@@ -149,7 +149,7 @@ JS;
 $this->registerJs($js);
 $this->registerCss('.ttl-sec {font-size: 0.7em;}')
 ?>
-<?= \yii\bootstrap\Html::a('Daily stat', Yii::$app->urlManager->createUrl(['time/stat'])) ?>
+<?= \yii\bootstrap\Html::a('Daily stat', ['stat'], ['class' => 'btn btn-default']) ?>
 <hr>
 <?php if ($activities) : ?>
     <?php foreach ($activities as $activity) : ?>
