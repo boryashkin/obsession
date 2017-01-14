@@ -37,7 +37,22 @@ class Operation extends ActiveRecord
      *
      * @var integer
      */
-    public $toCreditId;
+    protected $_toCreditId;
+
+    public function getToCreditId()
+    {
+        if (is_null($this->_toCreditId)) {
+            if ($this->isCredit) {
+                $this->_toCreditId = $this->creditId;
+            }
+        }
+
+        return $this->_toCreditId;
+    }
+    public function setToCreditId($creditId)
+    {
+        $this->_toCreditId = (int)$creditId;
+    }
 
     /**
      * @var array
@@ -149,6 +164,9 @@ class Operation extends ActiveRecord
     public function getIsCredit()
     {
         if ($this->_isCredit === null) {
+            if (!$this->creditId && $this->credit) {
+                $this->creditId = $this->credit->id;
+            }
             $this->_isCredit = !empty($this->creditId);
         }
 
@@ -194,7 +212,8 @@ class Operation extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if ($this->isCredit && !$this->toCreditId && ($this->credit->attributes != $this->credit->oldAttributes)) {
+        if ($this->isCredit && ($this->credit->attributes != $this->credit->oldAttributes)) {
+            $this->credit->returned = false;
             //@todo: transaction
             if ($this->credit->save()) {
                 $this->creditId = $this->credit->id;

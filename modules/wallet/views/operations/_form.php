@@ -24,6 +24,14 @@ $('#operation-iscredit').change(function() {
 
 JS;
 $this->registerJs($js);
+
+$newCreditStatus = '';
+$oldCreditStatus = '';
+if (!$model->isNewRecord && $model->isCredit) {
+    $oldCreditStatus = ' active';
+} else {
+    $newCreditStatus = ' active';
+}
 ?>
 
 <div class="operation-form">
@@ -48,13 +56,13 @@ $this->registerJs($js);
     <!-- Debt values -->
     <div id="credit-form"<?php if (!$model->isCredit) : ?> style="display: none;"<?php endif; ?>>
         <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">New</a></li>
-            <li role="presentation"><a href="#existing" aria-controls="existing" role="tab" data-toggle="tab">Existing</a></li>
+            <li role="presentation" class="<?= $newCreditStatus ?>"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">New</a></li>
+            <li role="presentation" class="<?= $oldCreditStatus ?>"><a href="#existing" aria-controls="existing" role="tab" data-toggle="tab">Existing</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="new">
+            <div role="tabpanel" class="tab-pane<?= $newCreditStatus ?>" id="new">
                 <?= $form->field($credit, 'dueDate')->widget(DateTimePicker::class, [
                     'options' => [
                         'class' => 'form-control input-sm',
@@ -68,11 +76,11 @@ $this->registerJs($js);
                 ]) ?>
 
                 <?= $form->field($credit, 'creditor')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div role="tabpanel" class="tab-pane<?= $oldCreditStatus ?>" id="existing">
+                <?= $form->field($model, 'toCreditId')->dropDownList(Credit::find()->select(['creditor', 'id'])->indexBy('id')->asArray()->column(), ['prompt'=>'Creditor']) ?>
 
                 <?= $form->field($credit, 'returned')->checkbox() ?>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="existing">
-                <?= $form->field($model, 'toCreditId')->dropDownList(Credit::find()->select(['creditor', 'id'])->indexBy('id')->asArray()->column(), ['prompt'=>'Creditor']) ?>
             </div>
         </div>
 

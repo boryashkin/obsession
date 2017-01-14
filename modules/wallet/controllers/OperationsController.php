@@ -118,16 +118,25 @@ class OperationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if ($model->isCredit) {
-            $credit = $model->credit;
+        $isLoaded = $model->load(Yii::$app->request->post());
+        if ($isLoaded && $model->isCredit) {
+            $credit = new Credit();
+            if (!$model->toCreditId && $credit->load(Yii::$app->request->post())) {
+                //new credit
+                $model->credit = $credit;
+            } else {
+                //link to existing credit
+                $credit = Credit::findOne($model->toCreditId);
+                if (!$credit) {
+                    $model->addError('toCreditId', 'Credit does not exist');
+                } else {
+                    $model->creditId = $credit->id;
+                }
+            }
         } else {
             $credit = new Credit();
         }
 
-        $isLoaded = $model->load(Yii::$app->request->post());
-        if ($model->isCredit && $credit->load(Yii::$app->request->post())) {
-            $model->credit = $credit;
-        }
         if ($isLoaded && $model->save()) {
             return $this->redirect(['/wallet']);
         } else {

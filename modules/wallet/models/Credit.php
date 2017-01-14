@@ -93,4 +93,18 @@ class Credit extends ActiveRecord
     {
         return new CreditQuery(get_called_class());
     }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $credit = self::findOne(['creditor' => $this->creditor]);
+            if ($credit) {
+                $this->addError('creditor', 'Creditor already exists');
+
+                return false;
+            }
+        }
+
+        return parent::beforeSave($insert);
+    }
 }
