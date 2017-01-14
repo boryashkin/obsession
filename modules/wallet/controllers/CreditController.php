@@ -77,7 +77,7 @@ class CreditController extends Controller
         $model = new Credit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/wallet']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -100,7 +100,7 @@ class CreditController extends Controller
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/wallet']);
         } else {
             return $this->render('update', compact('model', 'operations'));
         }
