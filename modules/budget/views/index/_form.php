@@ -15,6 +15,8 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'description')->textarea() ?>
+
     <?= $form->field($model, 'expectedDate')->widget(DateTimePicker::class, [
         'options' => [
             'class' => 'form-control input-sm',

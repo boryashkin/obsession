@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $expectedDate
  * @property string $realDate
  * @property string $name
+ * @property string $description
  * @property string $expectedSum
  * @property string $realSum
  * @property integer $done
@@ -57,6 +58,7 @@ class Budget extends ActiveRecord
             [['expectedSum', 'realSum'], 'number'],
             [['done', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            ['description', 'string']
         ];
     }
 
@@ -80,6 +82,7 @@ class Budget extends ActiveRecord
             'expectedDate' => 'Expected Date',
             'realDate' => 'Real Date',
             'name' => 'Name',
+            'description' => 'Description',
             'expectedSum' => 'Expected Sum',
             'realSum' => 'Real Sum',
             'done' => 'Done',

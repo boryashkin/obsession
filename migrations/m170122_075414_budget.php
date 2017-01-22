@@ -14,6 +14,7 @@ class m170122_075414_budget extends Migration
             'expectedDate' => $this->date()->notNull(),
             'realDate' => $this->date(),
             'name' => $this->string(),
+            'description' => $this->text(),
             'expectedSum' => $this->decimal(10, 2)->notNull(),
             'realSum' => $this->decimal(10, 2),
             'done' => $this->boolean()->defaultValue(false),
@@ -28,15 +29,4 @@ class m170122_075414_budget extends Migration
         $this->dropTable('budget');
         return true;
     }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

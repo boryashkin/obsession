@@ -47,6 +47,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'expectedDate',
                 'label' => 'Month',
                 'format' => ['dateTime', 'php:F Y'],
+                'contentOptions' => function ($model) {
+                    $month = (new DateTime($model->expectedDate))->format('m');
+                    if (in_array($month, ['12', '01', '02'])) {
+                        // winter
+                        $color = '#f0f8ff';
+                    } elseif ($month > 2 && $month < 6) {
+                        // spring
+                        $color = '#f5f5dc';
+                    } elseif ($month > 5 && $month < 9) {
+                        // summer
+                        $color = '#90ee90';
+                    } else {
+                        // fall
+                        $color = '#faebd7';
+                    }
+
+                    return ['style' => 'background: ' . $color . ';'];
+                },
             ],
             [
                 'attribute' => 'expectedDate',
@@ -61,7 +79,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'expectedSum',
                 'format' => 'decimal',
                 'contentOptions' => function ($model) {
-
                     $color = $model['expectedSum'] < 0 ? 'red' : 'green';
                     return ['style' => 'color: ' . $color . ';'];
                 },
@@ -71,7 +88,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'realSum',
                 'format' => 'decimal',
                 'contentOptions' => function ($model) {
-
                     $color = $model['realSum'] < 0 ? 'red' : 'green';
                     return ['style' => 'color: ' . $color . ';'];
                 },
@@ -87,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'style' => 'color: ' . ($model->done ? 'green' : 'red'),
                     ];
                 },
-                'footer' => round(($totalDone / ($totalDone + $totalUndone) * 100)) . '%'
+                'footer' => $totalDone || $totalUndone ? round(($totalDone / ($totalDone + $totalUndone) * 100)) . '%' : ''
             ],
 
 
