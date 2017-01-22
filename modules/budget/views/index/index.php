@@ -9,6 +9,10 @@ use yii\grid\GridView;
 /* @var $sumOfRealSum float */
 /* @var $totalDone float */
 /* @var $totalUndone float */
+/* @var $totalExpectedIncome float */
+/* @var $totalExpectedOutgo float */
+/* @var $totalRealIncome float */
+/* @var $totalRealOutgo float */
 
 $this->title = 'Budgets';
 $this->params['breadcrumbs'][] = $this->title;
@@ -20,8 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Wallet', ['/wallet'], ['class' => 'btn btn-default']) ?> <?= Html::a('Create Budget', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <h3>Expected total sum: <?= $sumOfExpectedSum ?></h3>
-    <h3>Real total sum: <?= $sumOfRealSum ?></h3>
+    <h3>Expected:
+        <label class="label label-success"><?= $totalExpectedIncome ?></label>
+        / <label class="label label-danger"><?= $totalExpectedOutgo ?></label>
+    </h3>
+    <h3>Real:
+        <label class="label label-success"><?= $totalRealIncome ?></label>
+        / <label class="label label-danger"><?= $totalRealOutgo ?></label>
+    </h3>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'showFooter' => true,

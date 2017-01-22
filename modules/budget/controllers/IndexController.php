@@ -2,6 +2,7 @@
 
 namespace app\modules\budget\controllers;
 
+use app\modules\budget\models\BudgetStatistic;
 use Yii;
 use app\modules\budget\models\Budget;
 use yii\data\ActiveDataProvider;
@@ -56,18 +57,7 @@ class IndexController extends Controller
             ]),
 
         ]);
-        $sums = Budget::find()->select([
-            new Expression('sum(expectedSum) as expectedSum'),
-            new Expression('sum(realSum) as realSum'),
-            new Expression('count(done) as totalRecords'),
-            new Expression(
-                '('
-                . Budget::find()->where(['done' => false])
-                    ->select(new Expression('count(*) as done'))
-                    ->createCommand()->rawSql
-                . ') as totalUndone'
-            )
-        ])->asArray()->one();
+        $sums = BudgetStatistic::getSums();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -75,6 +65,10 @@ class IndexController extends Controller
             'sumOfRealSum' => (float)$sums['realSum'],
             'totalDone' => (float)($sums['totalRecords'] - $sums['totalUndone']),
             'totalUndone' => (float)$sums['totalUndone'],
+            'totalExpectedIncome' => (float)$sums['expectedIncome'],
+            'totalExpectedOutgo' => (float)$sums['expectedOutgo'],
+            'totalRealIncome' => (float)$sums['realIncome'],
+            'totalRealOutgo' => (float)$sums['realOutgo'],
         ]);
     }
 
