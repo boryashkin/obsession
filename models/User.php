@@ -59,6 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /** @inheritdoc */
     public function behaviors()
     {
         return [
@@ -83,6 +84,10 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne($id);
     }
 
+    /**
+     * @param $username
+     * @return static
+     */
     public static function findByUsername($username)
     {
         return self::findOne(['username' => $username]);
@@ -128,6 +133,7 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->passwordHash);
     }
 
+    /** @inheritdoc */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {

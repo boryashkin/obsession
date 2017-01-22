@@ -56,6 +56,9 @@ $config = [
         'time' => [
             'class' => 'app\modules\time\Module',
         ],
+        'reading' => [
+            'class' => 'app\modules\reading\Module',
+        ],
     ],
     'params' => $params,
 ];
