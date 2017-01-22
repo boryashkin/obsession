@@ -25,12 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Wallet', ['/wallet'], ['class' => 'btn btn-default']) ?> <?= Html::a('Create Budget', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <h3>Expected:
-        <label class="label label-success"><?= $totalExpectedIncome ?></label>
-        / <label class="label label-danger"><?= $totalExpectedOutgo ?></label>
+        <label class="label label-success"><?= number_format($totalExpectedIncome) ?></label>
+        / <label class="label label-danger"><?= number_format($totalExpectedOutgo) ?></label>
     </h3>
     <h3>Real:
-        <label class="label label-success"><?= $totalRealIncome ?></label>
-        / <label class="label label-danger"><?= $totalRealOutgo ?></label>
+        <label class="label label-success"><?= number_format($totalRealIncome) ?></label>
+        / <label class="label label-danger"><?= number_format($totalRealOutgo) ?></label>
     </h3>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
