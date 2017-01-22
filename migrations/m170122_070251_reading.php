@@ -21,6 +21,7 @@ class m170122_070251_reading extends Migration
 
     public function down()
     {
+        return false;
         $this->dropTable('reading');
         return true;
     }

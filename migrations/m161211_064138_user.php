@@ -21,9 +21,9 @@ class m161211_064138_user extends Migration
 
     public function down()
     {
-        echo "m161211_064138_user cannot be reverted.\n";
-
         return false;
+        $this->dropTable('user');
+        return true;
     }
 
     /*

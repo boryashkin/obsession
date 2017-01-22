@@ -17,17 +17,8 @@ class m161210_041202_tag extends Migration
 
     public function down()
     {
+        return false;
         $this->dropTable('tag');
+        return true;
     }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

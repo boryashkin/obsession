@@ -35,6 +35,7 @@ class m161211_103938_timeTrack extends Migration
 
     public function down()
     {
+        return false;
         $this->dropTable('timeTrack');
         $this->dropTable('activity');
         return true;

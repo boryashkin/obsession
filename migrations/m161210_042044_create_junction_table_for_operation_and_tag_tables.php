@@ -62,6 +62,7 @@ class m161210_042044_create_junction_table_for_operation_and_tag_tables extends 
      */
     public function down()
     {
+        return false;
         // drops foreign key for table `operation`
         $this->dropForeignKey(
             'fk-operation_tag-operation_id',

@@ -36,10 +36,9 @@ class m161207_180340_operation extends Migration
 
     public function down()
     {
-        //$this->dropTable('operations');
-        //$this->dropTable('credit');
-
-        //echo 'Проверить, есть ли новости';
-        //return false;
+        return false;
+        $this->dropTable('operations');
+        $this->dropTable('credit');
+        return true;
     }
 }
