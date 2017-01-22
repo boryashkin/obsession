@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Readings';
+$this->title = 'Reading';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="reading-index">
@@ -25,11 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'category',
-            'name',
             [
-                'attribute' => 'link',
+                'attribute' => 'name',
                 'value' => function ($model) {
-                    return Html::a('Go read', $model->link);
+                    if ($model->link) {
+                        return Html::a($model->name, $model->link);
+                    } else {
+                        return $model->name;
+                    }
                 },
                 'format' => 'raw',
             ],
@@ -47,7 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_at',
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'visible' => Yii::$app->user->isGuest ? false : true,
+            ],
         ],
     ]); ?>
 </div>
