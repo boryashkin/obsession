@@ -59,6 +59,9 @@ $config = [
         'reading' => [
             'class' => 'app\modules\reading\Module',
         ],
+        'budget' => [
+            'class' => 'app\modules\budget\Module',
+        ],
     ],
     'params' => $params,
 ];

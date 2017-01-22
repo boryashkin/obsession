@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
         <div class="row text-right">
             <p>
+                <?= Html::a('Budget', ['/budget'], ['class' => 'btn btn-default']) ?>
                 <?= Html::a('Stat by tags', ['stat'], ['class' => 'btn btn-default']) ?> <?= Html::a('Create Operation', ['operations/create'], ['class' => 'btn btn-success']) ?>
             </p>
         </div>
