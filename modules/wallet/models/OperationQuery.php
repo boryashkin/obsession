@@ -2,6 +2,7 @@
 
 namespace app\modules\wallet\models;
 use yii\db\Expression;
+use yii\db\Query;
 
 /**
  * This is the ActiveQuery class for [[Operation]].
@@ -61,5 +62,19 @@ class OperationQuery extends \yii\db\ActiveQuery
             ->where('{{operation}}.sum < 0 AND {{operation.creditId}} IS NOT NULL')
             ->orWhere('{{operation}}.creditId IS NULL')
             ->groupBy('{{tag}}.id')->asArray()->all();
+    }
+
+    public function getBorisdStat()
+    {
+        $sql = <<<SQL
+SELECT
+(SELECT count(sum) FROM operation WHERE description LIKE "%чай%") as tea,
+(SELECT count(sum) FROM operation WHERE description LIKE "%хлеб%") as bread,
+(SELECT count(sum) FROM operation WHERE description LIKE "%кетчуп%") as ketchup,
+(SELECT count(sum) FROM operation WHERE description LIKE "%яйц%") as egg
+FROM dual
+SQL;
+
+        return \Yii::$app->db->createCommand($sql)->queryOne();
     }
 }
