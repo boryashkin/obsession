@@ -8,6 +8,7 @@ use app\modules\wallet\models\Operation;
 /* @var $this yii\web\View */
 /* @var $operationsProvider yii\data\ActiveDataProvider */
 /* @var $creditsProvider yii\data\ActiveDataProvider */
+/* @var $dailyProvider yii\data\ActiveDataProvider */
 /* @var $sumOfCredits float */
 
 $this->title = 'Wallet';
@@ -83,6 +84,23 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                                 },
                             ],*/
+                        ],
+                    ],
+                ]); ?>
+                <h4>Daily expenses</h4>
+                <?= GridView::widget([
+                    'dataProvider' => $dailyProvider,
+                    'showFooter' => false,
+                    'footerRowOptions' => ['class' => 'active'],
+                    'columns' => [
+                        [
+                            'attribute' => 'date',
+                            'format' => ['dateTime', 'php:d.m.Y']
+                        ],
+                        [
+                            'attribute' => 'total',
+                            'format' => 'decimal',
+                            'contentOptions' => ['style' => 'color: red;'],
                         ],
                     ],
                 ]); ?>

@@ -2,7 +2,6 @@
 
 namespace app\modules\wallet\models;
 use yii\db\Expression;
-use yii\db\Query;
 
 /**
  * This is the ActiveQuery class for [[Operation]].
@@ -64,17 +63,49 @@ class OperationQuery extends \yii\db\ActiveQuery
             ->groupBy('{{tag}}.id')->asArray()->all();
     }
 
-    public function getBorisdStat()
+    public function getDailyStat()
     {
-        $sql = <<<SQL
-SELECT
-(SELECT count(sum) FROM operation WHERE description LIKE "%чай%") as tea,
-(SELECT count(sum) FROM operation WHERE description LIKE "%хлеб%") as bread,
-(SELECT count(sum) FROM operation WHERE description LIKE "%кетчуп%") as ketchup,
-(SELECT count(sum) FROM operation WHERE description LIKE "%яйц%") as egg
-FROM dual
-SQL;
+        return $this->select([
+            new Expression('sum(sum) as total'),
+            new Expression('FROM_UNIXTIME(created_at, \'%Y-%m-%d\') as date'),
+            new Expression('created_at as id'),
+        ])
+            ->where('creditId is NULL')
+            ->andWhere('sum < 0')
+            ->groupBy('date')->asArray();
+    }
 
-        return \Yii::$app->db->createCommand($sql)->queryOne();
+    /**
+     * Get array of sums grouped by searched names
+     * @param array $names [
+     *  'column' => 'me',// will be (SELECT count(sum) FROM o WHERE desc LIKE "%me%") as column
+     * ]
+     * @return array|false
+     */
+    public function getStatByNames(array $names)
+    {
+        if (!$names) {
+            return [];
+        }
+        // build a sql
+        $sql = 'SELECT ';
+        $total = count($names);
+        for ($i = 1; $i <= $total; $i++) {
+            $sql .= "(SELECT count(sum) FROM operation WHERE description LIKE :val{$i}) as :col{$i} ";
+            if ($i != $total) {
+                $sql .= ', ';
+            }
+        }
+        $sql .= 'FROM dual';
+
+        $bindParams = [];
+        $i = 1;
+        foreach ($names as $column => $name) {
+            $bindParams[":col{$i}"] = $column;
+            $bindParams[":val{$i}"] = '%' . $name . '%';
+            $i++;
+        }
+
+        return \Yii::$app->db->createCommand($sql)->bindValues($bindParams)->queryOne();
     }
 }

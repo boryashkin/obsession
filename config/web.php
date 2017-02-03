@@ -66,6 +66,11 @@ $config = [
     'params' => $params,
 ];
 
+//attach some event handlers
+if (@include_once __DIR__ . '/myown/web.php') {
+    
+}
+
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';

@@ -61,8 +61,20 @@ class IndexController extends Controller
                 ],
             ]),
         ]);
+        $dailyProvider = new ArrayDataProvider([
+            'allModels' => Operation::find()->getDailyStat()
+                ->orderBy(['id' => SORT_DESC])
+                ->limit(15)
+                ->all(),
+            'pagination' => false,
+        ]);
 
-        return $this->render('index', compact('operationsProvider','creditsProvider','sumOfCredits'));
+        return $this->render('index', compact(
+            'operationsProvider',
+            'creditsProvider',
+            'sumOfCredits',
+            'dailyProvider'
+        ));
     }
 
     public function actionStat()
