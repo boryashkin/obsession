@@ -94,7 +94,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'footerRowOptions' => ['class' => 'active'],
                     'columns' => [
                         [
-                            'attribute' => 'date',
+                            'label' => 'Date',
+                            'attribute' => 'id',
                             'format' => ['dateTime', 'php:d.m.Y']
                         ],
                         [
