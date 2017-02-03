@@ -80,7 +80,7 @@ class OperationQuery extends \yii\db\ActiveQuery
      * @param array $names [
      *  'column' => 'me',// will be (SELECT count(sum) FROM o WHERE desc LIKE "%me%") as column
      * ]
-     * @return array|false
+     * @return array
      */
     public function getStatByNames(array $names)
     {
