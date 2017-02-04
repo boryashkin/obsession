@@ -31,7 +31,9 @@ class BorisdHandler
      */
     public static function pushFoodStat(Event $event)
     {
+        \Yii::trace('BorisHandler event called');
         if (!class_exists(FtpPusher::class)) {
+            \Yii::trace('BorisHandler event fail FtpPusher not found');
             return;
         }
 
@@ -39,11 +41,12 @@ class BorisdHandler
         /** @var Operation $operation */
         $operation = $event->sender;
         foreach (self::$foodStatFields as $name) {
-            if (false !== strpos($operation->description, $name)) {
+            if (false !== mb_stripos($operation->description, $name)) {
                 $needPush = true;
             }
         }
         if (!$needPush) {
+            \Yii::trace('BorisHandler event fail no need to push');
             return;
         }
 
