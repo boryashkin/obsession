@@ -67,8 +67,8 @@ $config = [
 ];
 
 //attach some event handlers
-if (@include_once __DIR__ . '/myown/web.php') {
-    
+if (@include_once __DIR__ . '/myown/config.php') {
+    @include_once __DIR__ . '/myown/web.php';
 }
 
 if (YII_ENV_DEV) {

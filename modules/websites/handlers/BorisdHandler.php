@@ -2,7 +2,7 @@
 
 namespace app\modules\websites\handlers;
 
-use app\config\myown\FtpBegetAuth;
+use Yii;
 use app\components\FtpPusher;
 use app\modules\wallet\models\Operation;
 use app\modules\wallet\models\OperationQuery;
@@ -53,12 +53,15 @@ class BorisdHandler
         /**
          * Send stat json file to other web-site's server
          */
-        $auth = FtpBegetAuth::class;
         $stat = (new OperationQuery(Operation::class))->getStatByNames(self::$foodStatFields);
         $stat['tea'] *= 25;
         $stat['egg'] *= 10;
         $stat['dateEnd'] = date('d.m.Y');
-        $ftp = new FtpPusher($auth::$host, $auth::$login, $auth::$password);
+        $ftp = new FtpPusher(
+            Yii::$app->params['borisd.ftp']['host'],
+            Yii::$app->params['borisd.ftp']['login'],
+            Yii::$app->params['borisd.ftp']['password']
+        );
 
         $ftp->addFromString(json_encode($stat), '/json/', 'food.json');
         $ftp->push();
