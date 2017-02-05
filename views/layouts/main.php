@@ -39,10 +39,13 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Wallet', 'url' => ['/wallet']],
             ['label' => 'Time', 'url' => ['/time']],
+            ['label' => 'Plans', 'url' => ['/time/plans/index']],
             ['label' => 'Reading', 'url' => ['/reading']],
-            ['label' => 'Tags', 'url' => ['/tags']],
-            ['label' => 'Users', 'url' => ['/users']],
-            ['label' => 'Activities', 'url' => ['/time/activities']],
+            ['label' => 'Settings', 'items' => [
+                ['label' => 'Tags', 'url' => ['/tags']],
+                ['label' => 'Users', 'url' => ['/users']],
+                ['label' => 'Activities', 'url' => ['/time/activities']],
+            ]],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
