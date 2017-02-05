@@ -7,6 +7,7 @@ use yii\base\InvalidCallException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Transaction;
+use yii\validators\DateValidator;
 
 /**
  * This is the model class for table "{{%task}}".
@@ -16,10 +17,11 @@ use yii\db\Transaction;
  * @property string $description
  * @property string $start
  * @property integer $state
+ * @property integer $duration
+ * @property integer $planId
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property PlanTask[] $planTasks
  * @property Plan[] $plans
  */
 class Task extends ActiveRecord
@@ -27,13 +29,10 @@ class Task extends ActiveRecord
     /** Possible states for task */
     const STATES = [
         0 => 'New',
-        1 => 'Moved once',
-        2 => 'Moved twice',//last chance to move start-date
-        3 => 'Enough',
+        1 => 'Moved once',//last chance to move start-date
+        2 => 'Moved twice',
+        4 => 'Done',//Enough moving
     ];
-
-    /** @var integer This task is part of the plan */
-    public $planId;
 
     /**
      * @inheritdoc
@@ -50,9 +49,9 @@ class Task extends ActiveRecord
     {
         return [
             [['description'], 'string'],
-            [['start'], 'required'],
-            [['start'], 'safe'],
-            [['state', 'created_at', 'updated_at', 'planId'], 'integer'],
+            [['start', 'duration'], 'required'],
+            [['start'], 'date', 'format' => 'php:Y-m-d H:i:s'],
+            [['state', 'created_at', 'updated_at', 'planId', 'duration'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['planId'], 'exist', 'targetClass' => Plan::className(), 'targetAttribute' => ['planId' => 'id']],
         ];
@@ -69,6 +68,8 @@ class Task extends ActiveRecord
             'description' => 'Description',
             'start' => 'Start',
             'state' => 'State',
+            'duration' => 'Duration',
+            'planId' => 'Plan',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -90,46 +91,11 @@ class Task extends ActiveRecord
         ];
     }
 
-    /** @var Transaction */
-    private $transaction;
-
-    /** @inheritdoc */
-    public function beforeSave($insert)
-    {
-        $this->transaction = $this->getDb()->beginTransaction();
-        return parent::beforeSave($insert);
-    }
-
-    /** @inheritdoc */
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($this->planId) {
-            try {
-                $this->link('plan', Plan::findOne($this->planId));
-            } catch (InvalidCallException $e) {
-                $this->addError('planId', 'Failed to link task to plan');
-                $this->transaction->rollBack();
-
-                return false;
-            }
-        }
-        $this->transaction->commit();
-        parent::afterSave($insert, $changedAttributes);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPlanTask()
-    {
-        return $this->hasOne(PlanTask::className(), ['task_id' => 'id']);
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getPlan()
     {
-        return $this->hasOne(Plan::className(), ['id' => 'plan_id'])->via('planTask');
+        return $this->hasOne(Plan::className(), ['id' => 'planId']);
     }
 }

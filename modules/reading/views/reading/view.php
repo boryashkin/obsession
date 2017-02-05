@@ -33,8 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'link:ntext',
             'done',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format' => ['dateTime', 'php:d.m.Y'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => ['dateTime', 'php:d.m.Y'],
+            ],
         ],
     ]) ?>
 

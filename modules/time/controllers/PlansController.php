@@ -2,6 +2,7 @@
 
 namespace app\modules\time\controllers;
 
+use app\modules\reading\models\Reading;
 use app\modules\time\models\Task;
 use Yii;
 use app\modules\time\models\Plan;
@@ -39,13 +40,24 @@ class PlansController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Plan::find(),
         ]);
-        $taskProvider = new ActiveDataProvider([
-            'query' => Task::find(),
+        $todayTaskProvider = new ActiveDataProvider([
+            'query' => Task::find()->where('start >= CURDATE()')
+                ->andWhere('start < DATE_ADD(CURDATE(), INTERVAL 1 DAY)'),
+        ]);
+        $yesterdayTaskProvider = new ActiveDataProvider([
+            'query' => Task::find()->where('start >= DATE_ADD(CURDATE(), INTERVAL -2 DAY)')
+                ->andWhere('start < DATE_ADD(CURDATE(), INTERVAL -1 DAY)'),
+        ]);
+        $tomorrowTaskProvider = new ActiveDataProvider([
+            'query' => Task::find()->where('start >= DATE_ADD(CURDATE(), INTERVAL 1 DAY)')
+                ->andWhere('start < DATE_ADD(CURDATE(), INTERVAL 2 DAY)'),
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'taskProvider' => $taskProvider,
+            'todayTaskProvider' => $todayTaskProvider,
+            'yesterdayTaskProvider' => $yesterdayTaskProvider,
+            'tomorrowTaskProvider' => $tomorrowTaskProvider,
         ]);
     }
 
@@ -56,8 +68,16 @@ class PlansController extends Controller
      */
     public function actionView($id)
     {
+        $taskProvider = new ActiveDataProvider([
+            'query' => Task::find()->where(['planId' => $id]),
+        ]);
+        $readingsProvider = new ActiveDataProvider([
+            'query' => Reading::find()->where(['planId' => $id]),
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'taskProvider' => $taskProvider,
+            'readingsProvider' => $readingsProvider,
         ]);
     }
 

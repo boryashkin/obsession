@@ -7,6 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\time\models\Task */
 
 $this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Plans', 'url' => ['plans/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $name
  * @property string $link
  * @property integer $done
+ * @property integer $planId
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -49,7 +50,7 @@ class Reading extends ActiveRecord
         return [
             [['category'], 'required'],
             [['link'], 'string'],
-            [['done', 'created_at', 'updated_at'], 'integer'],
+            [['done', 'created_at', 'updated_at', 'planId'], 'integer'],
             [['category', 'name'], 'string', 'max' => 255],
         ];
     }
@@ -65,6 +66,7 @@ class Reading extends ActiveRecord
             'name' => 'Name',
             'link' => 'Link',
             'done' => 'Done',
+            'planId' => 'Plan',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

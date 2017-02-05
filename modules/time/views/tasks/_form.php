@@ -27,6 +27,8 @@ use app\modules\time\models\Plan;
         ]
     ]) ?>
 
+    <?= $form->field($model, 'duration')->textInput() ?>
+
     <?= $form->field($model, 'state')->dropDownList(\app\modules\time\models\Task::STATES) ?>
 
     <?= $form->field($model, 'planId')

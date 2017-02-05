@@ -2,6 +2,7 @@
 
 namespace app\modules\time\models;
 
+use app\modules\reading\models\Reading;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -16,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property PlanTask[] $planTasks
+ * @property Reading[] $readings
  * @property Task[] $tasks
  */
 class Plan extends ActiveRecord
@@ -75,16 +76,16 @@ class Plan extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlanTasks()
+    public function getTasks()
     {
-        return $this->hasMany(PlanTask::className(), ['plan_id' => 'id']);
+        return $this->hasMany(Task::className(), ['planId' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTasks()
+    public function getReadings()
     {
-        return $this->hasMany(Task::className(), ['id' => 'task_id'])->via('PlanTask');
+        return $this->hasMany(Reading::className(), ['planId' => 'id']);
     }
 }

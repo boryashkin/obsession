@@ -5,7 +5,9 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $taskProvider yii\data\ActiveDataProvider */
+/* @var $todayTaskProvider yii\data\ActiveDataProvider */
+/* @var $yesterdayTaskProvider yii\data\ActiveDataProvider */
+/* @var $tomorrowTaskProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Plans';
 $this->params['breadcrumbs'][] = $this->title;
@@ -43,8 +45,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('Create', ['tasks/create'], ['class' => 'btn btn-success']) ?>
             </p>
             <h4>Daily</h4>
+            <h5>Today</h5>
+            <?php
+            $s = '2017-02-05 20:30:47';
+            $d = new \DateTime($s);
+            echo($d->format('H:i'));
+
+            ?>
             <?= GridView::widget([
-                'dataProvider' => $taskProvider,
+                'dataProvider' => $todayTaskProvider,
                 'layout' => "{items}\n{pager}",
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -52,8 +61,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     [
                         'attribute' => 'start',
-                        'format' => ['dateTime', 'php:d.m.Y']
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model*/
+                            return (new \DateTime($model->start))->format('H:i');
+                        },
                     ],
+                    'duration',
                     'name',
                     [
                         'attribute' => 'state',
@@ -70,6 +83,71 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ],
             ]); ?>
+            <h5>Tomorrow</h5>
+            <?= GridView::widget([
+                'dataProvider' => $tomorrowTaskProvider,
+                'layout' => "{items}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+
+                    'id',
+                    [
+                        'attribute' => 'start',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model*/
+                            return (new \DateTime($model->start))->format('H:i');
+                        },
+                    ],
+                    'duration',
+                    'name',
+                    [
+                        'attribute' => 'state',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model */
+                            return \app\modules\time\models\Task::STATES[$model->state];
+                        },
+                    ],
+
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view} {update}',
+                        'controller' => 'tasks',
+                    ],
+                ],
+            ]); ?>
+            <h5>Yesterday</h5>
+            <?= GridView::widget([
+                'dataProvider' => $yesterdayTaskProvider,
+                'layout' => "{items}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+
+                    'id',
+                    [
+                        'attribute' => 'start',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model*/
+                            return (new \DateTime($model->start))->format('H:i');
+                        },
+                    ],
+                    'duration',
+                    'name',
+                    [
+                        'attribute' => 'state',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model */
+                            return \app\modules\time\models\Task::STATES[$model->state];
+                        },
+                    ],
+
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view} {update}',
+                        'controller' => 'tasks',
+                    ],
+                ],
+            ]); ?>
+
         </div>
     </div>
 </div>

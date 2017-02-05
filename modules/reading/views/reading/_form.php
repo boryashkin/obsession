@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\time\models\Plan;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\reading\models\Reading */
@@ -17,6 +18,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'link')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'planId')
+        ->dropDownList(
+            Plan::find()->where('completeness < 100')->select(['name'])->asArray()->indexBy('id')->column(),
+            ['prompt' => '']
+        )?>
 
     <?= $form->field($model, 'done')->checkbox() ?>
 
