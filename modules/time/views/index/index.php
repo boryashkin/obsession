@@ -6,149 +6,21 @@
 
 use app\modules\time\models\Activity;
 use app\modules\time\models\TimeTrack;
+use app\modules\time\models\Plan;
 
 $this->title = 'Time';
 $this->params['breadcrumbs'][] = $this->title;
 
 $urlStart = Yii::$app->urlManager->createUrl('/time/tracks/create');
 $urlStop = Yii::$app->urlManager->createUrl('/time/tracks/update');
-$js = <<<JS
-var urlStart = "{$urlStart}";
-var urlStop = "{$urlStop}";
-JS;
-$js .= <<<'JS'
 
-function dateDiff(date1, date2) {
-    //Customise date2 for your required future time
-    var diff = (date2 - date1)/1000,
-        diff = Math.abs(Math.floor(diff));
-    var days = Math.floor(diff/(24*60*60)),
-        leftSec = diff - days * 24*60*60;
-    var hrs = Math.floor(leftSec/(60*60)),
-        leftSec = leftSec - hrs * 60*60;
-    var min = Math.floor(leftSec/(60)),
-        leftSec = leftSec - min * 60;
-    var diffObject = {
-        'days': days,
-        'hours': hrs,
-        'minutes': min,
-        'seconds': leftSec,
-        'totalSeconds': (days * 24 * 60 * 60) + (hrs * 60 * 60) + (min * 60) + leftSec,
-    };
-    
-    return diffObject;
-}
-function addNewClock(aid, timestamp) {
-    timestamp = parseInt(timestamp) * 1000;
-    var clock = new Date(timestamp)
-    dateTimers[aid] = {};
-    dateTimers[aid]['start'] = clock;
-}
-function removeClock(aid) {
-    return delete dateTimers[aid];
-}
-/* collection of start-dates of each one activity */
-var dateTimers = {};
-$('.time-track').each(function() {
-    var $this = $(this),
-        Cid = $this.closest('.activity-container').attr('data-id');
-    if ($this.attr('data-timestamp')) {
-        addNewClock(Cid, $this.attr('data-timestamp'));
-    }
-});
-
-/* refresh timers */
-var interval = setInterval(function() {
-    for (var aid in dateTimers) {
-        var diffObj = dateDiff(new Date(), dateTimers[aid]['start']),
-            $timeField = $('#track-' + aid),
-            $totalField = $('#total-' + aid),
-            totalSec = parseInt($totalField.attr('data-last')) + diffObj['totalSeconds'];     
-        $timeField.text(diffObj['days'] + ', ' + diffObj['hours'] + ':' + diffObj['minutes'] + ':' + diffObj['seconds']);
-        $totalField.text(totalSec);
-    }
-}, 1000);
-
-$('.btn-start').click(function(){
-    var $this = $(this),
-        aid = $this.attr('data-id'),
-        $noteField = $('#note-' + aid),
-        note = $noteField.val();
-    $this.attr('disabled', true);
-    
-    $.ajax({
-        method: "POST",
-        url: urlStart,
-        data: { activityId: aid, note: note },
-        dataType: "json",
-        complete: function(resp) {
-            
-        },
-        success: function(response) {
-            //var response = resp.responseJSON; 
-            if (response.status == true) {
-                $('#stop-' + aid).attr('disabled', false).attr('data-track-id', response.trackId);
-                $('#track-' + aid).attr('data-timestamp', response.timestamp);
-                $noteField.hide();
-                addNewClock(aid, response.timestamp);
-            } else {
-                $this.attr('disabled', false);
-                var errors = '';
-                for (var e in response.errors) {
-                    response.errors[e].forEach(function(txt){
-                        errors = errors + ' ' + txt;
-                    });
-                }
-                alert('Errors: ' + errors);
-            }
-        },
-        error: function(e) {
-            $this.attr('disabled', false);
-            alert(e.status + ' ' + e.statusText);
-        }
-    });
-});
-$('.btn-stop').click(function(){
-    var $this = $(this),
-        aid = $this.attr('data-id'),
-        trackId = $this.attr('data-track-id'),
-        $noteField = $('#note-' + aid);
-    $this.attr('disabled', true);
-    
-    $.ajax({
-        method: "POST",
-        url: urlStop + '?id=' + trackId,
-        data: { activityId: aid, 'action': 'stop' },
-        dataType: "json",
-        success: function(response) {
-            if (response.status) {
-                $('#start-' + aid).attr('disabled', false);
-                $this.attr('data-track-id', '');
-                removeClock(aid);
-                $('#track-' + aid).attr('data-timestamp', '').text('');
-                $noteField.val('').show();
-            } else {
-                $this.attr('disabled', false);
-                var errors = '';
-                for (var e in response.errors) {
-                    response.errors[e].forEach(function(txt){
-                        errors = errors + ' ' + txt;
-                    });
-                }
-                alert('Errors: ' + errors);
-            }
-        },
-        error: function(e) {
-            $this.attr('disabled', false);
-            alert(e.status + ' ' + e.statusText)
-        }
-    });
-});
-JS;
-
-$this->registerJs($js);
-$this->registerCss('.ttl-sec {font-size: 0.7em;}')
+$this->registerAssetBundle(\app\modules\time\assets\TimeTrackAsset::class);
+$plans = Plan::find()->where('completeness < 100')->select(['name'])->asArray()->indexBy('id')->column();
 ?>
+<div class="hidden" data-description="This is for js">
+    <span id="url-start-holder"><?= $urlStart ?></span>
+    <span id="url-stop-holder"><?= $urlStop ?></span>
+</div>
 <?= \yii\bootstrap\Html::a('Daily stat', ['stat'], ['class' => 'btn btn-default']) ?>
 <hr>
 <?php if ($activities) : ?>
@@ -202,6 +74,15 @@ $this->registerCss('.ttl-sec {font-size: 0.7em;}')
                 <div class="col-xs-6 form-group ">
                     <label></label>
                     <input id="note-<?= $activity->id ?>"<?php if ($activity->activeTrack) : ?> style="display: none;"<?php endif; ?> type="text" class="input-lg form-control" placeholder="Note about the future track"/>
+                </div>
+                <div class="col-xs-6 form-group ">
+                    <label></label>
+                    <?= \yii\bootstrap\Html::dropDownList('planId', '',  $plans, [
+                        'id' => 'plan-' . $activity->id,
+                        'prompt' => '',
+                        'class' => 'input-lg form-control',
+                        'style' => $activity->activeTrack ? 'display: none;' : '',
+                    ]) ?>
                 </div>
             </div>
         </div>

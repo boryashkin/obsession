@@ -96,6 +96,38 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
+        <h4>Spended time</h4>
+        <?= \yii\grid\GridView::widget([
+            'dataProvider' => $timeProvider,
+            'layout' => "{items}\n{pager}",
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+
+                'id',
+                [
+                    'attribute' => 'start',
+                    'value' => function ($model) {
+                        /** @var \app\modules\time\models\TimeTrack $model*/
+                        return (new \DateTime($model->start))->format('d.m.Y H:i');
+                    },
+                ],
+                [
+                    'attribute' => 'stop',
+                    'value' => function ($model) {
+                        /** @var \app\modules\time\models\TimeTrack $model*/
+                        return (new \DateTime($model->stop))->format('d.m.Y H:i');
+                    },
+                ],
+
+                'note',
+
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'controller' => 'tracks',
+                ],
+            ],
+        ]); ?>
     </div>
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

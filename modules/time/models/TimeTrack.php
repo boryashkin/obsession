@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
  * @property string $start dateTime
  * @property string $stop dateTime
  * @property string $note
+ * @property integer $planId
  *
  * @property Activity $activity
  * @property \DateInterval $duration
@@ -52,7 +53,7 @@ class TimeTrack extends ActiveRecord
         return [
             [['activityId'], 'required'],
             ['start', 'required', 'on' => self::SCENARIO_CREATE],
-            [['activityId'], 'integer'],
+            [['activityId', 'planId'], 'integer'],
             [['start', 'stop'], 'date', 'format' => 'php:Y-m-d H:i:s'],
             ['note', 'string'],
             ['stop', 'required', 'when' => function ($model) {
@@ -85,6 +86,7 @@ class TimeTrack extends ActiveRecord
             'start' => 'Start',
             'stop' => 'Stop',
             'note' => 'Note',
+            'planId' => 'plan',
         ];
     }
 

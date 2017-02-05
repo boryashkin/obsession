@@ -88,4 +88,12 @@ class Plan extends ActiveRecord
     {
         return $this->hasMany(Reading::className(), ['planId' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTimeTracks()
+    {
+        return $this->hasMany(TimeTrack::className(), ['planId' => 'id']);
+    }
 }

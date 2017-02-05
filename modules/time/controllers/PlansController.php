@@ -4,6 +4,7 @@ namespace app\modules\time\controllers;
 
 use app\modules\reading\models\Reading;
 use app\modules\time\models\Task;
+use app\modules\time\models\TimeTrack;
 use Yii;
 use app\modules\time\models\Plan;
 use yii\data\ActiveDataProvider;
@@ -74,10 +75,14 @@ class PlansController extends Controller
         $readingsProvider = new ActiveDataProvider([
             'query' => Reading::find()->where(['planId' => $id]),
         ]);
+        $timeProvider = new ActiveDataProvider([
+            'query' => TimeTrack::find()->where(['planId' => $id]),
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'taskProvider' => $taskProvider,
             'readingsProvider' => $readingsProvider,
+            'timeProvider' => $timeProvider,
         ]);
     }
 
