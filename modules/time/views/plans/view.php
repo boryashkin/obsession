@@ -7,6 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\time\models\Plan */
 /* @var $taskProvider \yii\data\ActiveDataProvider */
 /* @var $readingsProvider \yii\data\ActiveDataProvider */
+/* @var $timeProvider \yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Plans', 'url' => ['index']];

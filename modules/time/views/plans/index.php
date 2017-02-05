@@ -46,12 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
             <h4>Daily</h4>
             <h5>Today</h5>
-            <?php
-            $s = '2017-02-05 20:30:47';
-            $d = new \DateTime($s);
-            echo($d->format('H:i'));
-
-            ?>
             <?= GridView::widget([
                 'dataProvider' => $todayTaskProvider,
                 'layout' => "{items}\n{pager}",
