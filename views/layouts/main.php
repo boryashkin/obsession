@@ -37,10 +37,11 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Plans', 'url' => ['/time/plans/index']],
             ['label' => 'Wallet', 'url' => ['/wallet']],
             ['label' => 'Time', 'url' => ['/time']],
-            ['label' => 'Plans', 'url' => ['/time/plans/index']],
             ['label' => 'Reading', 'url' => ['/reading']],
+            ['label' => 'Diary', 'url' => ['/diary']],
             ['label' => 'Settings', 'items' => [
                 ['label' => 'Tags', 'url' => ['/tags']],
                 ['label' => 'Users', 'url' => ['/users']],

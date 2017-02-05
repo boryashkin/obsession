@@ -62,6 +62,9 @@ $config = [
         'budget' => [
             'class' => 'app\modules\budget\Module',
         ],
+        'diary' => [
+            'class' => 'app\modules\diary\Module',
+        ],
     ],
     'params' => $params,
 ];
