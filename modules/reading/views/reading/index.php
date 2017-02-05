@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if (!Yii::$app->user->isGuest) : ?>
         <p>
-            <?= Html::a('Create Reading', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Add Reading', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>
     <?= GridView::widget([

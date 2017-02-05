@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\diary\models\Diary */
 
-$this->title = 'Create Diary';
+$this->title = 'Add record';
 $this->params['breadcrumbs'][] = ['label' => 'Diary', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
