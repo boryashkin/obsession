@@ -14,3 +14,6 @@
 ## Reading
 * List of names and links of books
   * mark finished as `done`
+
+## Time planning (0.1)
+* Long-term and daily plans, linked with time tracks and readint
