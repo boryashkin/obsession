@@ -102,7 +102,7 @@ class OperationQuery extends \yii\db\ActiveQuery
         $i = 1;
         foreach ($names as $column => $name) {
             $bindParams[":col{$i}"] = $column;
-            $bindParams[":val{$i}"] = '%' . $name . '%';
+            $bindParams[":val{$i}"] = $name . '%';
             $i++;
         }
 
