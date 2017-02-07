@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-        <h4>Spended time</h4>
+        <h4>Time spent</h4>
         <?= \yii\grid\GridView::widget([
             'dataProvider' => $timeProvider,
             'layout' => "{items}\n{pager}",
