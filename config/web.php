@@ -65,6 +65,9 @@ $config = [
         'diary' => [
             'class' => 'app\modules\diary\Module',
         ],
+        'service' => [
+            'class' => 'app\modules\service\Module',
+        ],
     ],
     'params' => $params,
 ];

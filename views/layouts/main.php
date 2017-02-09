@@ -46,6 +46,9 @@ AppAsset::register($this);
                 ['label' => 'Tags', 'url' => ['/tags']],
                 ['label' => 'Users', 'url' => ['/users']],
                 ['label' => 'Activities', 'url' => ['/time/activities']],
+                ['label' => 'Services', 'items' => [
+                    ['label' => 'Activities', 'url' => ['/service/db-dump']],
+                ]],
             ]],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
@@ -68,6 +71,9 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+        <?php if (Yii::$app->session->hasFlash('result')) : ?>
+            <div class="alert alert-info"><?= Yii::$app->session->getFlash('result') ?></div>
+        <?php endif; ?>
         <?= $content ?>
     </div>
 </div>
