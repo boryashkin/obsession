@@ -19,6 +19,7 @@ use yii\db\ActiveRecord;
  *
  * @property Reading[] $readings
  * @property Task[] $tasks
+ * @property TimeTrack[] $timeTracks
  */
 class Plan extends ActiveRecord
 {

@@ -8,6 +8,7 @@ use yii\widgets\DetailView;
 /* @var $taskProvider \yii\data\ActiveDataProvider */
 /* @var $readingsProvider \yii\data\ActiveDataProvider */
 /* @var $timeProvider \yii\data\ActiveDataProvider */
+/* @var $sumTime float */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Plans', 'url' => ['index']];
@@ -17,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div>
+    <p>
         <h4>Redings</h4>
         <?= \yii\grid\GridView::widget([
             'dataProvider' => $readingsProvider,
@@ -98,6 +99,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
         <h4>Time spent</h4>
+        <p>
+            <span class="label label-default">Total: <?= number_format($sumTime * 1 / (60 * 60), 2) ?> hrs</span>
+        </p>
         <?= \yii\grid\GridView::widget([
             'dataProvider' => $timeProvider,
             'layout' => "{items}\n{pager}",

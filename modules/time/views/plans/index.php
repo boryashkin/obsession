@@ -30,6 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'id',
                     'name',
+                    [
+                        'label' => 'hours spent',
+                        'value' => function ($model) {
+                            $hours = 0;
+                            /** @var \app\modules\time\models\Plan $model */
+                            foreach ($model->timeTracks as $track) {
+                                $sec = (new DateTime($track->stop))->getTimestamp();
+                                $sec -= (new DateTime($track->start))->getTimestamp();
+
+                                $hours += $sec * 1 / (60 * 60);
+                            }
+                            
+                            return number_format($hours, 2);
+                        }
+                    ],
                     'completeness',
 
                     [

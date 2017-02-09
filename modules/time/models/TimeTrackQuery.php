@@ -55,4 +55,12 @@ class TimeTrackQuery extends ActiveQuery
             ->indexBy('id')
             ->asArray()->all();
     }
+
+    /** @return ActiveQuery */
+    public function getSumSeconds()
+    {
+        return $this->select([
+            new Expression('sum(TIMESTAMPDIFF(SECOND, start, stop)) sum'),
+        ]);
+    }
 }

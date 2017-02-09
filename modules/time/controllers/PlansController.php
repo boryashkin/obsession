@@ -49,7 +49,7 @@ class PlansController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Plan::find(),
+            'query' => Plan::find()->with('timeTracks'),
         ]);
         $todayTaskProvider = new ActiveDataProvider([
             'query' => Task::find()->where('start >= CURDATE()')
@@ -88,11 +88,13 @@ class PlansController extends Controller
         $timeProvider = new ActiveDataProvider([
             'query' => TimeTrack::find()->where(['planId' => $id]),
         ]);
+        $sumTime = TimeTrack::find()->getSumSeconds()->where(['planId' => $id])->scalar();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'taskProvider' => $taskProvider,
             'readingsProvider' => $readingsProvider,
             'timeProvider' => $timeProvider,
+            'sumTime' => $sumTime,
         ]);
     }
 
