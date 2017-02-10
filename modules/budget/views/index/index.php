@@ -35,11 +35,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'showFooter' => true,
+        'rowOptions'=> function($model) {
+            /** @var \app\modules\budget\models\Budget $model */
+            if ($model->done) {
+                return ['style' => 'opacity: 0.5'];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'name',
+            [
+                'attribute' => 'name',
+                'contentOptions' => function ($model) {
+                    $weight = $model['expectedSum'] > 0 ? 'bold' : 'inherit';
+                    return ['style' => "font-weight: {$weight};"];
+                },
+            ],
             /*[
+                // if expected date has been changed
                 'attribute' => 'firstExpectedDate',
                 'format' => ['dateTime', 'php:d.m.Y']
             ],*/
