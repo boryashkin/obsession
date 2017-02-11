@@ -51,6 +51,8 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'done')->checkbox() ?>
 
+    <?= $form->field($model, 'repeatForYear')->checkbox() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

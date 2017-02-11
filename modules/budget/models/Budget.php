@@ -23,6 +23,9 @@ use yii\db\ActiveRecord;
  */
 class Budget extends ActiveRecord
 {
+    /** @var bool Create same record for each month of year */
+    public $repeatForYear;
+
     /**
      * @inheritdoc
      */
@@ -58,7 +61,8 @@ class Budget extends ActiveRecord
             [['expectedSum', 'realSum'], 'number'],
             [['done', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            ['description', 'string']
+            ['description', 'string'],
+            ['repeatForYear', 'boolean'],
         ];
     }
 
@@ -69,6 +73,32 @@ class Budget extends ActiveRecord
             $this->firstExpectedDate = $this->expectedDate;
         }
         return parent::beforeSave($insert);
+    }
+
+    /** @inheritdoc */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $date = new \DateTime($this->expectedDate);
+            if ($this->repeatForYear) {
+                while ($date->format('m') < 12) {
+                    $currentMonth = $date->format('m');
+                    $date->modify('next month');
+                    // check if next month doesn't have this day (like 31 february)
+                    if (($date->format('m') - $currentMonth) > 1) {
+                        // but we need the next month
+                        $date = new \DateTime($this->expectedDate);
+                        $date->modify('last day of next month');
+                    }
+
+                    $duplicate = new Budget();
+                    $duplicate->attributes = $this->attributes;
+                    $duplicate->expectedDate = $date->format('Y-m-d');
+                    $duplicate->repeatForYear = false;
+                    $duplicate->save();
+                }
+            }
+        }
     }
 
     /**
@@ -88,6 +118,7 @@ class Budget extends ActiveRecord
             'done' => 'Done',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'repeatForYear' => 'Repeat it for each next month of this year',
         ];
     }
 }
