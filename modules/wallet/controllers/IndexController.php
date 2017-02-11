@@ -4,7 +4,6 @@ namespace app\modules\wallet\controllers;
 
 use app\modules\wallet\models\Credit;
 use app\modules\wallet\models\StatSearchForm;
-use Symfony\Component\Debug\Tests\ExceptionHandlerTest;
 use Yii;
 use app\modules\wallet\models\Operation;
 use yii\data\ActiveDataProvider;
@@ -12,8 +11,6 @@ use yii\data\ArrayDataProvider;
 use yii\data\Sort;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * Wallet quick view
