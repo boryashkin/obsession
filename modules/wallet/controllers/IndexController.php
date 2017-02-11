@@ -3,6 +3,8 @@
 namespace app\modules\wallet\controllers;
 
 use app\modules\wallet\models\Credit;
+use app\modules\wallet\models\StatSearchForm;
+use Symfony\Component\Debug\Tests\ExceptionHandlerTest;
 use Yii;
 use app\modules\wallet\models\Operation;
 use yii\data\ActiveDataProvider;
@@ -79,11 +81,14 @@ class IndexController extends Controller
 
     public function actionStat()
     {
+        $model = new StatSearchForm();
+        $model->load(Yii::$app->request->post());
+        
         $provider = new ArrayDataProvider([
-            'allModels' => Operation::find()->getTagTotals(),
+            'allModels' => $model->searchQuery()->all(),
             'pagination' => false,
         ]);
 
-        return $this->render('stat', compact('provider'));
+        return $this->render('stat', compact('provider', 'model'));
     }
 }

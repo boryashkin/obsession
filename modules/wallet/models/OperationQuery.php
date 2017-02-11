@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\wallet\models;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -49,7 +50,7 @@ class OperationQuery extends \yii\db\ActiveQuery
     /**
      * Sum by tags
      *
-     * @return Operation[]|array
+     * @return ActiveQuery
      */
     public function getTagTotals()
     {
@@ -58,9 +59,9 @@ class OperationQuery extends \yii\db\ActiveQuery
             '{{tag}}.name',
             new Expression('SUM({{operation}}.sum) as sum'),
         ])
-            ->where('{{operation}}.sum < 0 AND {{operation.creditId}} IS NOT NULL')
+            ->andWhere('{{operation}}.sum < 0 AND {{operation.creditId}} IS NOT NULL')
             ->orWhere('{{operation}}.creditId IS NULL')
-            ->groupBy('{{tag}}.id')->asArray()->all();
+            ->groupBy('{{tag}}.id')->asArray();
     }
 
     public function getDailyStat()

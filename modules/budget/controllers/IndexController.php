@@ -55,7 +55,7 @@ class IndexController extends Controller
                     'expectedDate' => SORT_ASC,
                 ],
             ]),
-
+            'pagination' => false,
         ]);
         $sums = BudgetStatistic::getSums();
 
