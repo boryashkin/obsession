@@ -71,9 +71,10 @@ class IndexController extends Controller
         ]);
 
         $today = new \DateTime();
+        $tomorrow = (new \DateTime())->modify('+1 day');
         $statForm = new StatSearchForm([
             'dateFrom' => DateHelper::getStartOfWeek($today)->format('Y-m-d'),
-            'dateTo' => $today->format('Y-m-d'),
+            'dateTo' => $tomorrow->format('Y-m-d'),
         ]);
         $weekTotal = $statForm->searchTotalExpensesQuery()->scalar();
         $statForm->dateFrom = DateHelper::getStartOfMonth($today)->format('Y-m-d');
