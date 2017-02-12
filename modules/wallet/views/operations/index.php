@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\modules\wallet\helpers\Wallet;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <h3>На счету: <?= (new \app\modules\wallet\models\Operation())->getBalance() ?></h3>
+    <h3>На счету: <?= Wallet::getBalance() ?></h3>
 
     <p>
         <?= Html::a('Create Operation', ['create'], ['class' => 'btn btn-success']) ?>

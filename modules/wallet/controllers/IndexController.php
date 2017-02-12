@@ -2,6 +2,8 @@
 
 namespace app\modules\wallet\controllers;
 
+use app\helpers\DateHelper;
+use app\modules\wallet\helpers\Wallet;
 use app\modules\wallet\models\Credit;
 use app\modules\wallet\models\StatSearchForm;
 use Yii;
@@ -68,21 +70,41 @@ class IndexController extends Controller
             'pagination' => false,
         ]);
 
+        $today = new \DateTime();
+        $statForm = new StatSearchForm([
+            'dateFrom' => DateHelper::getStartOfWeek($today)->format('Y-m-d'),
+            'dateTo' => $today->format('Y-m-d'),
+        ]);
+        $weekTotal = $statForm->searchTotalExpensesQuery()->scalar();
+        $statForm->dateFrom = DateHelper::getStartOfMonth($today)->format('Y-m-d');
+        $monthTotal = $statForm->searchTotalExpensesQuery()->scalar();
+
+        $expectedMonthExpenses = Wallet::getExpectedExpensesSumForMonth($today);
+        $expectedMonthIncome = Wallet::getExpectedIncomeSumForMonth($today);
+
         return $this->render('index', compact(
             'operationsProvider',
             'creditsProvider',
             'sumOfCredits',
-            'dailyProvider'
+            'dailyProvider',
+            'weekTotal',
+            'monthTotal',
+            'expectedMonthExpenses',
+            'expectedMonthIncome'
         ));
     }
 
+    /**
+     * Expenses by tags
+     * @return string
+     */
     public function actionStat()
     {
         $model = new StatSearchForm();
         $model->load(Yii::$app->request->post());
         
         $provider = new ArrayDataProvider([
-            'allModels' => $model->searchQuery()->all(),
+            'allModels' => $model->searchTagTotalsQuery()->all(),
             'pagination' => false,
         ]);
 

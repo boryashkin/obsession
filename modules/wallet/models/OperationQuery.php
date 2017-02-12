@@ -34,9 +34,12 @@ class OperationQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
+    /**
+     * @return float
+     */
     public function getBalance()
     {
-        return $this->queryScalar('sum(sum)', null);
+        return (float)$this->queryScalar('sum(sum)', null);
     }
 
     public function withCredits()
@@ -64,6 +67,9 @@ class OperationQuery extends \yii\db\ActiveQuery
             ->groupBy('{{tag}}.id')->asArray();
     }
 
+    /**
+     * @return ActiveQuery
+     */
     public function getDailyStat()
     {
         return $this->select([
@@ -74,6 +80,19 @@ class OperationQuery extends \yii\db\ActiveQuery
             ->where('creditId is NULL')
             ->andWhere('sum < 0')
             ->groupBy('date')->asArray();
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getSumExpenses()
+    {
+        return $this->select([
+            new Expression('sum(sum) as total'),
+
+        ])
+            ->where('sum < 0')
+            ->asArray();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace app\modules\wallet\models;
 
 use yii\base\Model;
+use yii\db\ActiveQuery;
 
 /**
  * Class StatSearchForm
@@ -27,10 +28,27 @@ class StatSearchForm extends Model
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function searchQuery()
+    public function searchTagTotalsQuery()
     {
         $query = Operation::find()->getTagTotals();
 
+        return $this->applyFilters($query);
+    }
+    
+    public function searchTotalExpensesQuery()
+    {
+        $query = Operation::find()->getSumExpenses();
+
+        return $this->applyFilters($query);
+    }
+
+    /**
+     * Same actions for each method
+     * @param ActiveQuery $query
+     * @return ActiveQuery
+     */
+    private function applyFilters(ActiveQuery $query)
+    {
         if ($this->validate()) {
             if ($this->dateFrom && !$this->hasErrors('dateFrom')) {
                 $dateFrom = new \DateTime($this->dateFrom);

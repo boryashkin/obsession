@@ -2,6 +2,7 @@
 
 namespace app\modules\budget\models;
 
+use app\modules\budget\models\BudgetQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -120,5 +121,14 @@ class Budget extends ActiveRecord
             'updated_at' => 'Updated At',
             'repeatForYear' => 'Repeat it for each next month of this year',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     * @return BudgetQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new BudgetQuery(get_called_class());
     }
 }

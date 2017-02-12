@@ -3,29 +3,51 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\modules\wallet\models\Credit;
-use app\modules\wallet\models\Operation;
+use app\modules\wallet\helpers\Wallet;
 
 /* @var $this yii\web\View */
 /* @var $operationsProvider yii\data\ActiveDataProvider */
 /* @var $creditsProvider yii\data\ActiveDataProvider */
 /* @var $dailyProvider yii\data\ActiveDataProvider */
 /* @var $sumOfCredits float */
+/* @var $weekTotal float */
+/* @var $monthTotal float */
+/* @var $expectedMonthExpenses float */
+/* @var $expectedMonthIncome float */
 
 $this->title = 'Wallet';
 $this->params['breadcrumbs'][] = $this->title;
+$balanceEnoughForBudget = Wallet::isBalanceEnoughToCoverBudget();
 ?>
 <div class="operation-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <h3>Balance: <?= (new Operation())->getBalance() ?></h3>
+    <h3>Balance: <?= number_format(Wallet::getBalance(), 2) ?></h3>
 
     <div class="container">
         <div class="row text-right">
-            <p>
-                <?= Html::a('Budget', ['/budget'], ['class' => 'btn btn-default']) ?>
-                <?= Html::a('Stat by tags', ['stat'], ['class' => 'btn btn-default']) ?> <?= Html::a('Create Operation', ['operations/create'], ['class' => 'btn btn-success']) ?>
-            </p>
+            <div class="col-xs-8 text-left">
+                <div>
+                    Currently:
+                    <?php if ($balanceEnoughForBudget): ?>
+                        <label class="label label-success">Enough money to cover budget expenses</label>
+                    <?php endif; ?>
+                    <label class="label label-danger">spent this week: <?= number_format($weekTotal, 2) ?></label>
+                    <label class="label label-default">spent this month: <?= number_format($monthTotal, 2) ?></label>
+                </div>
+                <div>
+                    This month:
+                    <label class="label label-default">expected expenses: <?= number_format($expectedMonthExpenses, 2) ?></label>
+                    <label class="label label-success">expected income: <?= number_format($expectedMonthIncome, 2) ?></label>
+                </div>
+            </div>
+            <div class="col-xs-4 text-right">
+                <p>
+                    <?= Html::a('Budget', ['/budget'], ['class' => 'btn btn-default']) ?>
+                    <?= Html::a('Stat by tags', ['stat'], ['class' => 'btn btn-default']) ?> <?= Html::a('Create Operation', ['operations/create'], ['class' => 'btn btn-success']) ?>
+                </p>
+            </div>
         </div>
         <div class="row">
             <div class="credits-wrapper col-xs-12 col-md-6">

@@ -205,11 +205,6 @@ class Operation extends ActiveRecord
         return new OperationQuery(get_called_class());
     }
 
-    public function getBalance()
-    {
-        return $this->find()->getBalance();
-    }
-
     public function beforeSave($insert)
     {
         if ($this->isCredit && ($this->credit->attributes != $this->credit->oldAttributes)) {

@@ -14,7 +14,7 @@ use yii\grid\GridView;
 /* @var $totalRealIncome float */
 /* @var $totalRealOutgo float */
 
-$this->title = 'Budgets';
+$this->title = 'Budget';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="budget-index">
