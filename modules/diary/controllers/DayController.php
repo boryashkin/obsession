@@ -50,7 +50,7 @@ class DayController extends Controller
             'query' => Diary::find(),
             'sort' => new Sort([
                 'defaultOrder' => [
-                    'id' => SORT_DESC,
+                    'date' => SORT_DESC,
                 ],
             ]),
         ]);
