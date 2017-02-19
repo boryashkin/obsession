@@ -3,6 +3,7 @@
 namespace app\modules\wallet\models;
 
 use app\models\Tag;
+use app\modules\budget\models\Budget;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\behaviors\TimestampBehavior;
@@ -20,6 +21,7 @@ use yii\db\ActiveRecord;
  * @property integer $updated_at
  * @property boolean $isCredit
  * @property integer $creditId
+ * @property integer $budgetId
  *
  * @property array $tagsArray
  * @property integer $toCreditId
@@ -91,7 +93,7 @@ class Operation extends ActiveRecord
         return [
             [['sum'], 'required'],
             [['isSalary', 'isCredit'], 'boolean'],
-            [['creditId', 'toCreditId'], 'integer'],
+            [['creditId', 'toCreditId', 'budgetId'], 'integer'],
             [['sum'], 'number'],
             ['tagsArray', 'safe'],
             [['created_at', 'updated_at'], 'integer'],
@@ -113,6 +115,7 @@ class Operation extends ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'tagsArray' => 'Tags',
+            'budgetId' => 'Budget',
         ];
     }
 
@@ -184,6 +187,14 @@ class Operation extends ActiveRecord
     public function getCredit()
     {
         return $this->hasOne(Credit::className(), ['id' => 'creditId']);
+    }
+
+    /**
+     * @return Budget
+     */
+    public function getBudget()
+    {
+        return $this->hasOne(Budget::class, ['id' => 'budgetId']);
     }
 
     public function setCredit(Credit $credit)

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\datetime\DateTimePicker;
 use app\modules\wallet\models\Credit;
+use yii\db\Expression;
+use app\helpers\DateHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\wallet\models\Operation */
@@ -96,6 +98,15 @@ if (!$model->isNewRecord && $model->isCredit) {
         ],
         'data' => \app\models\Tag::getDropdownList()
     ]); ?>
+
+    <?= $form->field($model, 'budgetId')->dropDownList(
+            \app\modules\budget\models\Budget::find()->select(new Expression('CONCAT(expectedDate, " ", name)'))
+                ->where(['<=', 'expectedDate', DateHelper::getEndOfMonth(new DateTime())->format('Y-m-d H:i:s')])
+                ->andWhere(['>=', 'expectedDate', DateHelper::getStartOfWeek(new DateTime())->format('Y-m-d H:i:s')])
+                ->indexBy('id')->column(),
+        ['prompt' => '']
+    ) ?>
+
     <?= Html::a('Add tag', Yii::$app->urlManager->createUrl('/tags/create'), [
         'target' => '_blank',
     ]) ?>
