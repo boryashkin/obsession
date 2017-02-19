@@ -14,6 +14,7 @@ use app\modules\wallet\helpers\Wallet;
 /* @var $monthTotal float */
 /* @var $expectedMonthExpenses float */
 /* @var $expectedMonthIncome float */
+/* @var $budgetExpenses array */
 
 $this->title = 'Wallet';
 $this->params['breadcrumbs'][] = $this->title;
@@ -40,6 +41,12 @@ $balanceEnoughForBudget = Wallet::isBalanceEnoughToCoverBudget();
                     This month:
                     <label class="label label-default">expected expenses: <?= number_format($expectedMonthExpenses, 2) ?></label>
                     <label class="label label-success">expected income: <?= number_format($expectedMonthIncome, 2) ?></label>
+                </div>
+                <div>
+                    Budgets for:
+                    <?php foreach ($budgetExpenses as $expense) : ?>
+                        <label class="label label-<?php if ($expense['sum'] == 0) : ?>info<?php elseif ($expense['sum'] >= 0) : ?>danger<?php else: ?>success<?php endif;?>"><?= $expense['name'] ?>: <?= $expense['sum'] == 0 ? 0 : number_format(-$expense['sum'], 2) ?></label>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="col-xs-4 text-right">
@@ -153,7 +160,15 @@ $balanceEnoughForBudget = Wallet::isBalanceEnoughToCoverBudget();
                             },
                             'format' => 'decimal',
                         ],
-                        'description',
+                        [
+                            'attribute' => 'description',
+                            'contentOptions' => function ($model) {
+
+                                $color = $model['budgetId'] ? 'inherit' : '#ff7f50';
+                                return ['style' => 'color: ' . $color . ';', 'title' => 'Out of budget!'];
+                            },
+
+                        ],
                         [
                             'attribute' => 'updated_at',
                             'format' => ['dateTime', 'php:d.m.Y']

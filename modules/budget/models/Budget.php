@@ -3,6 +3,7 @@
 namespace app\modules\budget\models;
 
 use app\modules\budget\models\BudgetQuery;
+use app\modules\wallet\models\Operation;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -130,5 +131,13 @@ class Budget extends ActiveRecord
     public static function find()
     {
         return new BudgetQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOperations()
+    {
+        return $this->hasMany(Operation::class, ['budgetId' => 'id']);
     }
 }

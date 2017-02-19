@@ -43,6 +43,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
+        //preparing dataProviders
         $operationsProvider = new ActiveDataProvider([
             'query' => Operation::find()->withCredits(),
             'sort' => new Sort([
@@ -70,6 +71,7 @@ class IndexController extends Controller
             'pagination' => false,
         ]);
 
+        //Initializing totals
         $today = new \DateTime();
         $tomorrow = (new \DateTime())->modify('+1 day');
         $statForm = new StatSearchForm([
@@ -83,6 +85,9 @@ class IndexController extends Controller
         $expectedMonthExpenses = Wallet::getExpectedExpensesSumForMonth($today);
         $expectedMonthIncome = Wallet::getExpectedIncomeSumForMonth($today);
 
+        //budgets
+        $budgetExpenses = $statForm->searchExpensesByBudget()->asArray()->all();
+
         return $this->render('index', compact(
             'operationsProvider',
             'creditsProvider',
@@ -91,7 +96,8 @@ class IndexController extends Controller
             'weekTotal',
             'monthTotal',
             'expectedMonthExpenses',
-            'expectedMonthIncome'
+            'expectedMonthIncome',
+            'budgetExpenses'
         ));
     }
 
