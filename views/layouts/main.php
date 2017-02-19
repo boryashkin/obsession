@@ -47,7 +47,7 @@ AppAsset::register($this);
                 ['label' => 'Users', 'url' => ['/users']],
                 ['label' => 'Activities', 'url' => ['/time/activities']],
                 ['label' => 'Services', 'items' => [
-                    ['label' => 'Activities', 'url' => ['/service/db-dump']],
+                    ['label' => 'Dump db', 'url' => ['/service/db-dump']],
                 ]],
             ]],
             Yii::$app->user->isGuest ? (
