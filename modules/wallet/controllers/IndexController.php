@@ -86,6 +86,7 @@ class IndexController extends Controller
         $expectedMonthIncome = Wallet::getExpectedIncomeSumForMonth($today);
 
         //budgets
+        $statForm->dateTo =  DateHelper::getEndOfMonth($today)->format('Y-m-d');
         $budgetExpenses = $statForm->searchExpensesByBudget()->asArray()->all();
 
         return $this->render('index', compact(
