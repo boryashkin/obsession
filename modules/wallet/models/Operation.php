@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property boolean $isCredit
  * @property integer $creditId
  * @property integer $budgetId
+ * @property integer $categoryId
  *
  * @property array $tagsArray
  * @property integer $toCreditId
@@ -93,7 +94,7 @@ class Operation extends ActiveRecord
         return [
             [['sum'], 'required'],
             [['isSalary', 'isCredit'], 'boolean'],
-            [['creditId', 'toCreditId', 'budgetId'], 'integer'],
+            [['creditId', 'toCreditId', 'budgetId', 'categoryId'], 'integer'],
             [['sum'], 'number'],
             ['tagsArray', 'safe'],
             [['created_at', 'updated_at'], 'integer'],
@@ -116,6 +117,7 @@ class Operation extends ActiveRecord
             'updated_at' => 'Updated At',
             'tagsArray' => 'Tags',
             'budgetId' => 'Budget',
+            'categoryId' => 'Category',
         ];
     }
 
@@ -195,6 +197,14 @@ class Operation extends ActiveRecord
     public function getBudget()
     {
         return $this->hasOne(Budget::class, ['id' => 'budgetId']);
+    }
+
+    /**
+     * @return Credit
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'categoryId']);
     }
 
     public function setCredit(Credit $credit)

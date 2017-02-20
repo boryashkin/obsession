@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\datetime\DateTimePicker;
+use app\modules\wallet\models\Category;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\budget\models\Budget */
@@ -48,6 +49,11 @@ use kartik\datetime\DateTimePicker;
     <?php if (!$model->isNewRecord) : ?>
         <?= $form->field($model, 'realSum')->textInput(['maxlength' => true]) ?>
     <?php endif; ?>
+
+    <?= $form->field($model, 'categoryId')->dropDownList(
+        Category::find()->select('name')->indexBy('id')->column(),
+        ['prompt' => '']
+    ) ?>
 
     <?= $form->field($model, 'done')->checkbox() ?>
 

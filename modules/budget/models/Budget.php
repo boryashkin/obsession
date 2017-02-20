@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property integer $done
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $categoryId
  */
 class Budget extends ActiveRecord
 {
@@ -61,7 +62,7 @@ class Budget extends ActiveRecord
             [['expectedDate', 'expectedSum'], 'required'],
             [['firstExpectedDate', 'expectedDate', 'realDate'], 'date', 'format' => 'php:Y-m-d'],
             [['expectedSum', 'realSum'], 'number'],
-            [['done', 'created_at', 'updated_at'], 'integer'],
+            [['done', 'created_at', 'updated_at', 'categoryId'], 'integer'],
             [['name'], 'string', 'max' => 255],
             ['description', 'string'],
             ['repeatForYear', 'boolean'],
@@ -121,6 +122,7 @@ class Budget extends ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'repeatForYear' => 'Repeat it for each next month of this year',
+            'categoryId' => 'Category',
         ];
     }
 

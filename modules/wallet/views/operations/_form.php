@@ -6,6 +6,7 @@ use kartik\datetime\DateTimePicker;
 use app\modules\wallet\models\Credit;
 use yii\db\Expression;
 use app\helpers\DateHelper;
+use app\modules\wallet\models\Category;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\wallet\models\Operation */
@@ -51,8 +52,6 @@ if (!$model->isNewRecord && $model->isCredit) {
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'isSalary')->checkbox() ?>
-
     <?= $form->field($model, 'isCredit')->checkbox() ?>
 
     <!-- Debt values -->
@@ -89,6 +88,11 @@ if (!$model->isNewRecord && $model->isCredit) {
 
     </div>
     <!-- //Debt values -->
+
+    <?= $form->field($model, 'categoryId')->dropDownList(
+        Category::find()->select('name')->indexBy('id')->column(),
+        ['prompt' => '']
+    ) ?>
 
     <?= $form->field($model, 'tagsArray')->widget(\kartik\select2\Select2::class, [
         'initValueText' => '', // set the initial display text

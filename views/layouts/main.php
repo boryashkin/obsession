@@ -44,6 +44,7 @@ AppAsset::register($this);
             ['label' => 'Diary', 'url' => ['/diary']],
             ['label' => 'Settings', 'items' => [
                 ['label' => 'Tags', 'url' => ['/tags']],
+                ['label' => 'Categories', 'url' => ['/wallet/category']],
                 ['label' => 'Users', 'url' => ['/users']],
                 ['label' => 'Activities', 'url' => ['/time/activities']],
                 ['label' => 'Services', 'items' => [
