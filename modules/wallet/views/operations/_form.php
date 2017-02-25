@@ -106,7 +106,7 @@ if (!$model->isNewRecord && $model->isCredit) {
     <?= $form->field($model, 'budgetId')->dropDownList(
             \app\modules\budget\models\Budget::find()->select(new Expression('CONCAT(expectedDate, " ", name)'))
                 ->where(['<=', 'expectedDate', DateHelper::getEndOfMonth(new DateTime())->format('Y-m-d H:i:s')])
-                ->andWhere(['>=', 'expectedDate', DateHelper::getStartOfWeek(new DateTime())->format('Y-m-d H:i:s')])
+                ->andWhere(['>=', 'expectedDate', DateHelper::getStartOfMonth(new DateTime())->format('Y-m-d H:i:s')])
                 ->indexBy('id')->column(),
         ['prompt' => '']
     ) ?>

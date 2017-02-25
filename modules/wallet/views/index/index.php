@@ -12,7 +12,6 @@ use app\modules\wallet\helpers\Wallet;
 /* @var $sumOfCredits float */
 /* @var $weekTotal float */
 /* @var $monthTotal float */
-/* @var $expectedMonthExpenses float */
 /* @var $expectedMonthIncome float */
 /* @var $budgetExpenses array */
 
@@ -35,18 +34,20 @@ $balanceEnoughForBudget = Wallet::isBalanceEnoughToCoverBudget();
                         <label class="label label-success">Enough money to cover budget expenses</label>
                     <?php endif; ?>
                     <label class="label label-danger">spent this week: <?= number_format($weekTotal, 2) ?></label>
-                    <label class="label label-default">spent this month: <?= number_format($monthTotal, 2) ?></label>
+                    <label class="label label-info">spent this month: <?= number_format($monthTotal, 2) ?></label>
                 </div>
                 <div>
-                    This month:
-                    <label class="label label-default">expected expenses: <?= number_format($expectedMonthExpenses, 2) ?></label>
-                    <label class="label label-success">expected income: <?= number_format($expectedMonthIncome, 2) ?></label>
-                </div>
-                <div>
-                    Budgets for:
+                    Budgets for this month:
+                    <br>
+                    <?php $expectedMonthExpenses = 0; ?>
                     <?php foreach ($budgetExpenses as $expense) : ?>
-                        <label class="label label-<?php if ($expense['sum'] == 0) : ?>info<?php elseif ($expense['sum'] >= 0) : ?>danger<?php else: ?>success<?php endif;?>"><?= $expense['name'] ?>: <?= $expense['sum'] == 0 ? 0 : number_format(-$expense['sum'], 2) ?></label>
+                        <?php if ($expense['sum'] < 0) {$expectedMonthExpenses += $expense['sum'];} ?>
+                        <label class="label label-<?php if ($expense['sum'] == 0) : ?>default<?php elseif ($expense['sum'] >= 0) : ?>danger<?php else: ?>success<?php endif;?>"><?= $expense['name'] ?>: <?= $expense['sum'] == 0 ? 0 : number_format(-$expense['sum'], 2) ?></label>
                     <?php endforeach; ?>
+                </div>
+                <div>
+                    <label class="label label-success">expected income: <?= number_format($expectedMonthIncome, 2) ?></label>
+                    <label class="label label-primary">expected expenses: <?= number_format($expectedMonthExpenses, 2) ?></label>
                 </div>
             </div>
             <div class="col-xs-4 text-right">

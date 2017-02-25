@@ -82,7 +82,6 @@ class IndexController extends Controller
         $statForm->dateFrom = DateHelper::getStartOfMonth($today)->format('Y-m-d');
         $monthTotal = $statForm->searchTotalExpensesQuery()->scalar();
 
-        $expectedMonthExpenses = Wallet::getExpectedExpensesSumForMonth($today);
         $expectedMonthIncome = Wallet::getExpectedIncomeSumForMonth($today);
 
         //budgets
@@ -96,7 +95,6 @@ class IndexController extends Controller
             'dailyProvider',
             'weekTotal',
             'monthTotal',
-            'expectedMonthExpenses',
             'expectedMonthIncome',
             'budgetExpenses'
         ));

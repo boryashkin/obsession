@@ -34,14 +34,14 @@ class StatSearchForm extends Model
     {
         $query = Operation::find()->getTagTotals();
 
-        return $this->applyFilters($query);
+        return $this->applyFiltersAsTimestamps($query);
     }
     
     public function searchTotalExpensesQuery()
     {
         $query = Operation::find()->getSumExpenses();
 
-        return $this->applyFilters($query);
+        return $this->applyFiltersAsTimestamps($query);
     }
 
     /**
@@ -52,20 +52,21 @@ class StatSearchForm extends Model
         $query = Budget::find()->joinWith('operations o', false)->select([
             'budget.id',
             'budget.name',
-            new Expression('budget.expectedSum - sum(o.sum) as sum')
+            new Expression('IFNULL(budget.expectedSum - sum(o.sum), budget.expectedSum) as sum')
         ])->groupBy(['budget.id', 'budget.name'])
         ->andWhere(['<', 'budget.expectedSum', 0]);
 
-        return $this->applyFilters($query, 'o');
+        return $this->applyFiltersAsDates($query, 'expectedDate', 'budget');
     }
 
     /**
      * Same actions for each method
      * @param ActiveQuery $query
+     * @param string $field field to apply filters
      * @param string $alias
      * @return ActiveQuery
      */
-    private function applyFilters(ActiveQuery $query, $alias = null)
+    private function applyFiltersAsTimestamps(ActiveQuery $query, $field = 'created_at', $alias = null)
     {
         if (!$alias || !is_string($alias)) {
             $alias = '';
@@ -75,11 +76,39 @@ class StatSearchForm extends Model
         if ($this->validate()) {
             if ($this->dateFrom && !$this->hasErrors('dateFrom')) {
                 $dateFrom = new \DateTime($this->dateFrom);
-                $query->andWhere(['>', $alias . 'created_at', $dateFrom->getTimestamp()]);
+                $query->andWhere(['>=', $alias . $field, $dateFrom->getTimestamp()]);
             }
             if ($this->dateTo && !$this->hasErrors('dateTo')) {
                 $dateTo = new \DateTime($this->dateTo);
-                $query->andWhere(['<', $alias . 'created_at', $dateTo->getTimestamp()]);
+                $query->andWhere(['<=', $alias . $field, $dateTo->getTimestamp()]);
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * Same actions for each method
+     * @param ActiveQuery $query
+     * @param string $field field to apply filters
+     * @param string $alias
+     * @return ActiveQuery
+     */
+    private function applyFiltersAsDates(ActiveQuery $query, $field = 'created_at', $alias = null)
+    {
+        if (!$alias || !is_string($alias)) {
+            $alias = '';
+        } else {
+            $alias .= '.';
+        }
+        if ($this->validate()) {
+            if ($this->dateFrom && !$this->hasErrors('dateFrom')) {
+                $dateFrom = new \DateTime($this->dateFrom);
+                $query->andWhere(['>=', $alias . $field, $dateFrom->format('Y-m-d')]);
+            }
+            if ($this->dateTo && !$this->hasErrors('dateTo')) {
+                $dateTo = new \DateTime($this->dateTo);
+                $query->andWhere(['<=', $alias . $field, $dateTo->format('Y-m-d')]);
             }
         }
 
