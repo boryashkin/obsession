@@ -63,4 +63,14 @@ class DateHelper
 
         return $date->modify('last day of')->setTime(23, 59, 59);
     }
+
+    /**
+     * Returns name of the day of week
+     * @param DateTime $date
+     * @return string
+     */
+    public static function getDayOfWeek(DateTime $date)
+    {
+        return jddayofweek($date->format('w'), 1);
+    }
 }

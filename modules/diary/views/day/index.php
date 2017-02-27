@@ -22,7 +22,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'date',
+            [
+                'attribute' => 'date',
+                'format' => ['dateTime', 'php:d.m.Y']
+            ],
+            [
+                'label' => 'Day of week',
+                'value' => function ($model) {
+                    return \app\helpers\DateHelper::getDayOfWeek(new DateTime($model->date));
+                }
+            ],
             'description:ntext',
             'rate',
 
