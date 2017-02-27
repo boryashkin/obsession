@@ -8,6 +8,7 @@ use yii\grid\GridView;
 /* @var $todayTaskProvider yii\data\ActiveDataProvider */
 /* @var $yesterdayTaskProvider yii\data\ActiveDataProvider */
 /* @var $tomorrowTaskProvider yii\data\ActiveDataProvider */
+/* @var $unclosedOldTaskProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Plans';
 $this->params['breadcrumbs'][] = $this->title;
@@ -156,7 +157,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ],
             ]); ?>
+            <h5>Unclosed</h5>
+            <?= GridView::widget([
+                'dataProvider' => $unclosedOldTaskProvider,
+                'layout' => "{items}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
+                    'id',
+                    [
+                        'attribute' => 'start',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model*/
+                            return (new \DateTime($model->start))->format('d.m H:i');
+                        },
+                    ],
+                    'duration',
+                    'name',
+                    [
+                        'attribute' => 'state',
+                        'value' => function ($model) {
+                            /** @var \app\modules\time\models\Task $model */
+                            return \app\modules\time\models\Task::STATES[$model->state];
+                        },
+                    ],
+
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view} {update}',
+                        'controller' => 'tasks',
+                    ],
+                ],
+            ]); ?>
         </div>
     </div>
 </div>

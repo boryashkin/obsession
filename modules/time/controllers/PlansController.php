@@ -63,12 +63,17 @@ class PlansController extends Controller
             'query' => Task::find()->where('start >= DATE_ADD(CURDATE(), INTERVAL 1 DAY)')
                 ->andWhere('start < DATE_ADD(CURDATE(), INTERVAL 2 DAY)'),
         ]);
+        $unclosedOldTaskProvider = new ActiveDataProvider([
+            'query' => Task::find()->where('start < DATE_ADD(CURDATE(), INTERVAL 3 DAY)')
+                ->andWhere(['<', 'state', array_flip(Task::STATES)['Done']]),
+        ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'todayTaskProvider' => $todayTaskProvider,
             'yesterdayTaskProvider' => $yesterdayTaskProvider,
             'tomorrowTaskProvider' => $tomorrowTaskProvider,
+            'unclosedOldTaskProvider' => $unclosedOldTaskProvider,
         ]);
     }
 
