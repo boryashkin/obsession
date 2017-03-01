@@ -54,7 +54,7 @@ class StatSearchForm extends Model
             'budget.name',
             new Expression('IFNULL(budget.expectedSum - sum(o.sum), budget.expectedSum) as sum')
         ])->groupBy(['budget.id', 'budget.name'])
-        ->andWhere(['<', 'budget.expectedSum', 0]);
+        ->andWhere(['<', 'budget.expectedSum', 0])->andWhere(['done' => 0]);
 
         return $this->applyFiltersAsDates($query, 'expectedDate', 'budget');
     }

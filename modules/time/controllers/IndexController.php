@@ -5,6 +5,7 @@ namespace app\modules\time\controllers;
 use app\modules\time\models\Activity;
 use app\modules\time\models\TimeTrack;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -55,7 +56,12 @@ class IndexController extends Controller
     public function actionStat()
     {
         $stat = TimeTrack::find()->getStat();
+        $sumTimeByAct = TimeTrack::find()->getSumSeconds()->groupBy(['activityId'])
+            ->addSelect(['activityId'])->with('activity')->asArray();
+        $sumTimeByAct = new ArrayDataProvider([
+            'allModels' => $sumTimeByAct->all(),
+        ]);
         
-        return $this->render('stat', compact('stat'));
+        return $this->render('stat', compact('stat', 'sumTimeByAct'));
     }
 }

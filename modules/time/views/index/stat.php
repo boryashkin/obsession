@@ -1,6 +1,7 @@
 <?php
 /** @var $this yii\web\View */
 /** @var $stat array */
+/* @var $sumTimeByAct \yii\db\ActiveQuery */
 //@todo: get normal dataset from db instead of handling it here
 use miloschuman\highcharts\Highcharts;
 
@@ -72,6 +73,22 @@ $series = array_values($series);
         'series' => $series
     ]
 ]) ?>
+<div>
+    <?= \yii\grid\GridView::widget([
+        'dataProvider' => $sumTimeByAct,
+        'layout' => "{items}\n{pager}",
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
+            'activity.name',
+            [
+                'label' => 'Spent hours',
+                'value' => function ($model) {
+                    return number_format($model['sum'] * 1 / (60 * 60), 2);
+                },
+            ],
+        ],
+    ]); ?>
+</div>
 <hr>
 <?= \yii\bootstrap\Html::a('< Back to timers', ['index'], ['class' => 'btn btn-default']) ?>
