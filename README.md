@@ -10,7 +10,7 @@
 
 ## Wallet
 * Save expenses and debts
-* Get a lot of statistic tabels
+* Get a lot of statistic tables
 * Plan a budget
 ![wallet](https://cloud.githubusercontent.com/assets/5726656/23519506/f7618df2-ff98-11e6-8121-eb6620f1237b.png)
 ![wallet-stat](https://cloud.githubusercontent.com/assets/5726656/23519541/171bb56e-ff99-11e6-9ed7-20072152778d.png)
@@ -19,7 +19,7 @@
 
 
 ## Reading
-* Save a list of names and links to a books
+* Save a list of names and links to books
 
 ## Time planning
 * Long-term and daily plans, linked with time tracks and readings
