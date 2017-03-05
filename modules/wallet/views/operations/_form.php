@@ -24,7 +24,7 @@ $('#operation-iscredit').change(function() {
     $('#credit-form').find('input').val(null);
   }
 });
-
+$('#operation-sum').focus();
 JS;
 $this->registerJs($js);
 
