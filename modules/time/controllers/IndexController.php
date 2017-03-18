@@ -61,7 +61,8 @@ class IndexController extends Controller
         $sumTimeByAct = new ArrayDataProvider([
             'allModels' => $sumTimeByAct->all(),
         ]);
+        $activeTracks = TimeTrack::find()->where(['stop' => null])->with(['activity'])->all();
         
-        return $this->render('stat', compact('stat', 'sumTimeByAct'));
+        return $this->render('stat', compact('stat', 'sumTimeByAct', 'activeTracks'));
     }
 }

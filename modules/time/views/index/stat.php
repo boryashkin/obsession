@@ -2,6 +2,7 @@
 /** @var $this yii\web\View */
 /** @var $stat array */
 /* @var $sumTimeByAct \yii\db\ActiveQuery */
+/** @var $activeTracks \app\modules\time\models\TimeTrack[] */
 //@todo: get normal dataset from db instead of handling it here
 use miloschuman\highcharts\Highcharts;
 
@@ -57,6 +58,12 @@ foreach ($series as $name => $row) {
 $categories = array_values($categories);
 $series = array_values($series);
 ?>
+<?php if ($activeTracks) : ?>
+    <span>Currently active:</span>
+    <?php foreach ($activeTracks as $track) : ?>
+        <label class="label label-success"><?= $track->activity->name ?></label>
+    <?php endforeach; ?>
+<?php endif; ?>
 <?= Highcharts::widget([
     'options' => [
         'title' => ['text' => 'Daily stat'],
