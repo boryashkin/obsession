@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <h4>Redings</h4>
+        <h4>Reading</h4>
         <?= \yii\grid\GridView::widget([
             'dataProvider' => $readingsProvider,
             'layout' => "{items}\n{pager}",
