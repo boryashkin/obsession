@@ -39,7 +39,7 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Plans', 'url' => ['/time/plans/index']],
             ['label' => 'Wallet', 'url' => ['/wallet']],
-            ['label' => 'Time', 'url' => ['/time']],
+            ['label' => 'Time', 'url' => Yii::$app->user->isGuest ? ['/time/stat'] : ['/time']],
             ['label' => 'Reading', 'url' => ['/reading']],
             ['label' => 'Diary', 'url' => ['/diary']],
             ['label' => 'Settings', 'items' => [
