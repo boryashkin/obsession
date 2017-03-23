@@ -24,4 +24,4 @@
 ## Time planning
 * Long-term and daily plans, linked with time tracks and readings
 ![plans](https://cloud.githubusercontent.com/assets/5726656/23519632/752e4068-ff99-11e6-964d-3fad883c2b35.png)
-![plan-details](https://cloud.githubusercontent.com/assets/5726656/23519736/cecd3e62-ff99-11e6-8ed1-ca06b4b6581a.png)
+![plan-view](https://cloud.githubusercontent.com/assets/5726656/24262073/bf007de6-101a-11e7-99fd-3ac7531abe9b.png)
