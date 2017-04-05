@@ -142,4 +142,18 @@ class Budget extends ActiveRecord
     {
         return $this->hasMany(Operation::class, ['budgetId' => 'id']);
     }
+
+    /**
+     * Toggle done status of a budget record
+     */
+    public function toggleDoneStatus()
+    {
+        if ($this->done) {
+            $this->done = 0;
+        } else {
+            $this->done = 1;
+        }
+
+        return $this->done;
+    }
 }

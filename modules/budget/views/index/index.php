@@ -16,6 +16,34 @@ use yii\grid\GridView;
 
 $this->title = 'Budget';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<<'JS'
+$('.toggle-done').click(function () {
+    var $this = $(this),
+        id = $this.parent().data('key');
+    $.ajax({
+        type: "POST",
+        url: '/budget/ajax/toggle-done?budgetId=' + id,
+        data: {"budgetId":id},
+        success: function (response) {
+            if (response.status) {
+                if (response.value) {
+                    $this.css('color', 'green');
+                    $this.html('Yes');
+                    $this.parent().css('opacity', 0.5);
+                } else {
+                    $this.css('color', 'red');
+                    $this.html('No');
+                    $this.parent().css('opacity', 1);
+                }
+            }
+        },
+        dataType: 'json'
+    });
+});
+JS;
+
+$this->registerJs($js);
 ?>
 <div class="budget-index">
 
@@ -93,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'decimal',
                 'contentOptions' => function ($model) {
                     $color = $model['expectedSum'] < 0 ? 'red' : 'green';
-                    return ['style' => 'color: ' . $color . ';'];
+                    return ['style' => "color: {$color};"];
                 },
                 'footer' => number_format($sumOfExpectedSum),
             ],
@@ -114,6 +142,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => function ($model) {
                     return [
                         'style' => 'color: ' . ($model->done ? 'green' : 'red'),
+                        'class' => 'toggle-done'
                     ];
                 },
                 'footer' => $totalDone || $totalUndone ? round(($totalDone / ($totalDone + $totalUndone) * 100)) . '%' : ''
