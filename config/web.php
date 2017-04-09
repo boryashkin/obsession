@@ -48,6 +48,9 @@ $config = [
                 '/time/stat' => '/time/index/stat',
             ],
         ],
+        'assetManager' => [
+            'linkAssets' => true,
+        ],
     ],
     'modules' => [
         'wallet' => [
