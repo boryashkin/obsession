@@ -17,33 +17,7 @@ use yii\grid\GridView;
 $this->title = 'Budget';
 $this->params['breadcrumbs'][] = $this->title;
 
-$js = <<<'JS'
-$('.toggle-done').click(function () {
-    var $this = $(this),
-        id = $this.parent().data('key');
-    $.ajax({
-        type: "POST",
-        url: '/budget/ajax/toggle-done?budgetId=' + id,
-        data: {"budgetId":id},
-        success: function (response) {
-            if (response.status) {
-                if (response.value) {
-                    $this.css('color', 'green');
-                    $this.html('Yes');
-                    $this.parent().css('opacity', 0.5);
-                } else {
-                    $this.css('color', 'red');
-                    $this.html('No');
-                    $this.parent().css('opacity', 1);
-                }
-            }
-        },
-        dataType: 'json'
-    });
-});
-JS;
-
-$this->registerJs($js);
+\app\modules\budget\assets\BudgetAsset::register($this);
 ?>
 <div class="budget-index">
 
@@ -137,14 +111,15 @@ $this->registerJs($js);
             [
                 'attribute' => 'done',
                 'value' => function ($model) {
-                    return $model->done ? 'Yes' : 'No';
+                    $value = $model->done ? 'Yes' : 'No';
+                    return Html::tag('span', $value, ['class' => 'toggle-done']);
                 },
                 'contentOptions' => function ($model) {
                     return [
                         'style' => 'color: ' . ($model->done ? 'green' : 'red'),
-                        'class' => 'toggle-done'
                     ];
                 },
+                'format' => 'raw',
                 'footer' => $totalDone || $totalUndone ? round(($totalDone / ($totalDone + $totalUndone) * 100)) . '%' : ''
             ],
 
