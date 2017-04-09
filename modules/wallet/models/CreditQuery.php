@@ -38,13 +38,18 @@ class CreditQuery extends \yii\db\ActiveQuery
      *
      * @return $this
      */
-    public function withOperationId()
+    public function groupByCreditor()
     {
         return $this->joinWith('operations')->select([
             '{{credit}}.*',
-            '{{operation}}.id as operationId',
             new Expression('sum({{operation}}.sum) as sum'),
-        ])->groupBy(['credit.id'])->asArray();
+        ])->groupBy([
+            'credit.id',
+            'credit.returned',
+            'credit.dueDate',
+            'credit.creditor',
+            'credit.updated_at',
+        ])->asArray();
     }
 
     /**

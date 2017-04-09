@@ -64,7 +64,7 @@ class OperationQuery extends \yii\db\ActiveQuery
         ])
             ->andWhere('{{operation}}.sum < 0 AND {{operation.creditId}} IS NOT NULL')
             ->orWhere('{{operation}}.creditId IS NULL')
-            ->groupBy('{{tag}}.id')->asArray();
+            ->groupBy(['{{tag}}.id', '{{tag}}.name'])->asArray();
     }
 
     /**
@@ -79,7 +79,7 @@ class OperationQuery extends \yii\db\ActiveQuery
         ])
             ->where('creditId is NULL')
             ->andWhere('sum < 0')
-            ->groupBy('date')->asArray();
+            ->groupBy(['date', 'id'])->asArray();
     }
 
     /**

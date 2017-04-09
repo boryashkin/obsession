@@ -56,7 +56,7 @@ class IndexController extends Controller
         $sumOfCredits = Credit::find()->sumOfCredits();
         $creditsProvider = new ActiveDataProvider([
             'query' => Credit::find()->where(['returned' => false])
-                ->withOperationId()->orderBy(['dueDate' => SORT_ASC]),
+                ->groupByCreditor()->orderBy(['dueDate' => SORT_ASC]),
             'sort' => new Sort([
                 'defaultOrder' => [
                     'id' => SORT_DESC,
