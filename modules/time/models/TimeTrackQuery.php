@@ -49,6 +49,8 @@ class TimeTrackQuery extends ActiveQuery
             ->leftJoin('activity', 'timeTrack.activityId = activity.id')
             ->where(['NOT', ['stop' => null]])
             ->groupBy([
+                'id',
+                'name',
                 'date',
                 'activityId',
             ])
