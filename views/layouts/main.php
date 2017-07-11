@@ -42,6 +42,10 @@ AppAsset::register($this);
             ['label' => 'Time', 'url' => Yii::$app->user->isGuest ? ['/time/stat'] : ['/time']],
             ['label' => 'Reading', 'url' => ['/reading']],
             ['label' => 'Diary', 'url' => ['/diary']],
+            ['label' => 'Relationships', 'items' => [
+                ['label' => 'Persons', 'url' => ['/lrm/person']],
+                ['label' => 'Log', 'url' => ['/lrm/interaction-note']],
+            ]],
             ['label' => 'Settings', 'items' => [
                 ['label' => 'Tags', 'url' => ['/tags']],
                 ['label' => 'Categories', 'url' => ['/wallet/category']],

@@ -35,7 +35,7 @@ $this->title = 'Obsession app';
 
                 <p>Log of social interactions.</p>
 
-                <p><?= Html::a('soon...', '#', ['class' => 'btn btn-default']) ?></p>
+                <p><?= Html::a('LRM', Yii::$app->urlManager->createUrl('lrm'), ['class' => 'btn btn-default']) ?></p>
             </div>
         </div>
 

@@ -71,6 +71,9 @@ $config = [
         'service' => [
             'class' => 'app\modules\service\Module',
         ],
+        'lrm' => [
+            'class' => 'app\modules\lrm\Module',
+        ],
     ],
     'params' => $params,
 ];
