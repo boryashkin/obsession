@@ -33,6 +33,10 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'gender')->dropDownList(['f' => 'female', 'm' => 'male']) ?>
 
+    <?= $form->field($model, 'stateId')->dropDownList(\app\modules\lrm\models\PersonState::find()->select('name')->indexBy('id')->column(), [
+            'prompt' => '-',
+    ]) ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

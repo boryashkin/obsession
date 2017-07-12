@@ -28,6 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'birthdate',
             'gender',
+            [
+                'attribute' => 'state.name',
+                'label' => 'State',
+            ],
             // 'createdAt',
             // 'updatedAt',
 

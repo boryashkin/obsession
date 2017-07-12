@@ -45,6 +45,7 @@ AppAsset::register($this);
             ['label' => 'Relationships', 'items' => [
                 ['label' => 'Persons', 'url' => ['/lrm/person']],
                 ['label' => 'Log', 'url' => ['/lrm/interaction-note']],
+                ['label' => 'States', 'url' => ['/lrm/person-state']],
             ]],
             ['label' => 'Settings', 'items' => [
                 ['label' => 'Tags', 'url' => ['/tags']],

@@ -28,6 +28,7 @@ class m170711_173037_note extends Migration
 
     public function down()
     {
+        return false;
         echo self::TABLE . ' reverted';
         $this->dropTable(self::TABLE);
     }

@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $birthdate
  * @property string $description
  * @property string $gender
+ * @property int $stateId
  * @property integer $createdAt
  * @property integer $updatedAt
  *
@@ -39,6 +40,7 @@ class Person extends \yii\db\ActiveRecord
             [['birthdate'], 'date', 'format' => 'php:Y-m-d'],
             [['name', 'fullName', 'description'], 'string', 'max' => 255],
             [['gender'], 'in', 'range' => ['m', 'f']],
+            [['stateId'], 'exist', 'targetClass' => PersonState::class, 'targetAttribute' => 'id'],
         ];
     }
 
@@ -54,6 +56,7 @@ class Person extends \yii\db\ActiveRecord
             'birthdate' => 'Birthdate',
             'description' => 'Description',
             'gender' => 'Gender',
+            'stateId' => 'State',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
         ];
@@ -81,5 +84,10 @@ class Person extends \yii\db\ActiveRecord
     public function getInteractionNotes()
     {
         return $this->hasMany(InteractionNote::className(), ['personId' => 'id']);
+    }
+
+    public function getState()
+    {
+        return $this->hasOne(PersonState::class, ['id' => 'stateId']);
     }
 }

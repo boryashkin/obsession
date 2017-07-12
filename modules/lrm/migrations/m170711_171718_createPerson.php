@@ -22,6 +22,7 @@ class m170711_171718_createPerson extends Migration
 
     public function down()
     {
+        return false;
         echo self::TABLE . ' reverted';
         $this->dropTable(self::TABLE);
     }

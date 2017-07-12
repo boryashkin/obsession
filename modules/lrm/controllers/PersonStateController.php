@@ -3,17 +3,16 @@
 namespace app\modules\lrm\controllers;
 
 use Yii;
-use app\modules\lrm\models\Person;
-use app\modules\lrm\models\search\PersonSearch;
-use yii\filters\AccessControl;
+use app\modules\lrm\models\PersonState;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PersonController implements the CRUD actions for Person model.
+ * PersonStateController implements the CRUD actions for PersonState model.
  */
-class PersonController extends Controller
+class PersonStateController extends Controller
 {
     /**
      * @inheritdoc
@@ -21,15 +20,6 @@ class PersonController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -40,22 +30,22 @@ class PersonController extends Controller
     }
 
     /**
-     * Lists all Person models.
+     * Lists all PersonState models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PersonSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => PersonState::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Person model.
+     * Displays a single PersonState model.
      * @param integer $id
      * @return mixed
      */
@@ -67,16 +57,16 @@ class PersonController extends Controller
     }
 
     /**
-     * Creates a new Person model.
+     * Creates a new PersonState model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Person();
+        $model = new PersonState();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -85,7 +75,7 @@ class PersonController extends Controller
     }
 
     /**
-     * Updates an existing Person model.
+     * Updates an existing PersonState model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,7 +85,7 @@ class PersonController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -104,7 +94,7 @@ class PersonController extends Controller
     }
 
     /**
-     * Deletes an existing Person model.
+     * Deletes an existing PersonState model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -117,15 +107,15 @@ class PersonController extends Controller
     }
 
     /**
-     * Finds the Person model based on its primary key value.
+     * Finds the PersonState model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Person the loaded model
+     * @return PersonState the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Person::findOne($id)) !== null) {
+        if (($model = PersonState::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
