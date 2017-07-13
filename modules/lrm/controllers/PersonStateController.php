@@ -5,6 +5,7 @@ namespace app\modules\lrm\controllers;
 use Yii;
 use app\modules\lrm\models\PersonState;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,15 @@ class PersonStateController extends Controller
     {
         return [
             'verbs' => [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
