@@ -5,12 +5,12 @@ namespace app\modules\lrm\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\lrm\models\Person;
+use app\modules\lrm\models\Contact;
 
 /**
- * PersonSearch represents the model behind the search form about `app\modules\lrm\models\Person`.
+ * ContactSearch represents the model behind the search form about `app\modules\lrm\models\Contact`.
  */
-class PersonSearch extends Person
+class ContactSearch extends Contact
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PersonSearch extends Person
     public function rules()
     {
         return [
-            [['id', 'createdAt', 'updatedAt', 'stateId'], 'integer'],
-            [['name', 'fullName', 'birthdate', 'description', 'gender'], 'safe'],
+            [['id', 'personId', 'sort'], 'integer'],
+            [['contact', 'type', 'note'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PersonSearch extends Person
      */
     public function search($params)
     {
-        $query = Person::find();
+        $query = Contact::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +60,13 @@ class PersonSearch extends Person
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'birthdate' => $this->birthdate,
-            'stateId' => $this->stateId,
-            'createdAt' => $this->createdAt,
-            'updatedAt' => $this->updatedAt,
+            'personId' => $this->personId,
+            'sort' => $this->sort,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'fullName', $this->fullName])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'gender', $this->gender]);
+        $query->andFilterWhere(['like', 'contact', $this->contact])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'note', $this->note]);
 
         return $dataProvider;
     }

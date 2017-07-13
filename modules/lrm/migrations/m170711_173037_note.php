@@ -18,7 +18,7 @@ class m170711_173037_note extends Migration
             'updatedAt' => $this->integer()->notNull(),
         ]);
 
-        $personTable = m170711_171718_createPerson::TABLE;
+        $personTable = 'person';
         $this->addForeignKey(
             'fk-inter-person',
             '{{%' . self::TABLE . '}}', 'personId',

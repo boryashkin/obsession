@@ -26,11 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'name',
             [
-                'attribute' => 'state.name',
-                'label' => 'State',
+                'attribute' => 'stateId',
+                'value' => 'state.name',
+                'filter' => \app\modules\lrm\models\PersonState::find()->select('name')->indexBy('id')->column(),
             ],
             'birthdate',
             'gender',
+            [
+                'label' => 'Contact',
+                'format' => 'raw',
+                'value' => function (\app\modules\lrm\models\Person $model) {
+                    return Html::tag('i', '', ['class' => 'glyphicon glyphicon-book']) . Html::a(' Contacts', ['/lrm/contact/index', 'ContactSearch[personId]' => $model->id]);
+                }
+            ],
             // 'createdAt',
             // 'updatedAt',
 
