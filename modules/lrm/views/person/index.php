@@ -32,13 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'birthdate',
             'gender',
-            [
-                'label' => 'Contact',
-                'format' => 'raw',
-                'value' => function (\app\modules\lrm\models\Person $model) {
-                    return Html::tag('i', '', ['class' => 'glyphicon glyphicon-book']) . Html::a(' Contacts', ['/lrm/contact/index', 'ContactSearch[personId]' => $model->id]);
-                }
-            ],
+
             // 'createdAt',
             // 'updatedAt',
 

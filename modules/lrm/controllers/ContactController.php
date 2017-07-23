@@ -74,9 +74,10 @@ class ContactController extends Controller
     public function actionCreate()
     {
         $model = new Contact();
+        $model->load($_GET, '');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/lrm/person/view', 'id' => $model->personId]);
         } else {
             return $this->render('create', [
                 'model' => $model,
