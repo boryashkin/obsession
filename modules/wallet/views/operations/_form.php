@@ -36,12 +36,24 @@ if (!$model->isNewRecord && $model->isCredit) {
     $newCreditStatus = ' active';
 }
 ?>
-
+<div class="latest-operations">
+    <?php $latestPurchases = \app\modules\wallet\models\Operation::find()->orderBy(['id' => SORT_DESC])->limit(3)->all() ?>
+    <?php foreach ($latestPurchases as $purchase) : ?>
+        <div>
+            <label class="label label-warning"><?= date('d-m-Y H:i:s', $purchase->updated_at) ?> | <?= mb_substr($purchase->description, 0, 100) ?></label>
+        </div>
+    <?php endforeach; ?>
+</div>
+<br>
 <div class="operation-form">
 
     <div>
-        <?php if ($model->hasErrors()) :?><?php var_dump($model->errors) ?> <?php endif; ?>
-        <?php if ($credit->hasErrors()) : ?><?php var_dump($credit->errors) ?><?php endif; ?>
+        <?php if ($model->hasErrors()) :?>
+            <div class="alert alert-danger"><?= Html::errorSummary($model) ?></div>
+        <?php endif; ?>
+        <?php if ($credit->hasErrors()) : ?>
+            <div class="alert alert-danger"><?= Html::errorSummary($credit) ?></div>
+        <?php endif; ?>
     </div>
 
     <?php $form = ActiveForm::begin([
