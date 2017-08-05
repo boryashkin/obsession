@@ -2,6 +2,7 @@
 
 namespace app\modules\lrm\models\search;
 
+use app\modules\lrm\models\InteractionNote;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -46,7 +47,25 @@ class PersonSearch extends Person
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            /**
+             * SELECT c.*, p1.*
+                FROM customer c
+                JOIN purchase p1 ON (c.id = p1.customer_id)
+                LEFT OUTER JOIN purchase p2 ON (c.id = p2.customer_id AND
+                (p1.date < p2.date OR p1.date = p2.date AND p1.id < p2.id))
+                WHERE p2.id IS NULL;
+
+             */
+            'query' => $query->leftJoin('interactionNote in1', 'in1.personId = person.id')
+            ->join('LEFT OUTER JOIN', 'interactionNote in2', 'in2.personId = person.id AND
+             (in1.updatedAt < in2.updatedAt OR in1.updatedAt = in2.updatedAt AND in1.id < in2.id)')
+            ->where('in2.id IS NULL'),
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ],
+            ],
+            'pagination' => false,
         ]);
 
         $this->load($params);
