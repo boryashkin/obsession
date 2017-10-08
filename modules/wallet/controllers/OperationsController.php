@@ -18,7 +18,7 @@ use yii\filters\VerbFilter;
 class OperationsController extends Controller
 {
     /**
-     * @inheritdoc
+     * @inheritdocz 
      */
     public function behaviors()
     {
@@ -100,7 +100,7 @@ class OperationsController extends Controller
 
         }
         if ($isLoaded && $model->save()) {
-            return $this->redirect(['/wallet']);
+            return $this->redirect(['']);
         } else {
             return $this->render('create', [
                 'model' => $model,

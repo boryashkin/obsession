@@ -40,7 +40,7 @@ if (!$model->isNewRecord && $model->isCredit) {
     <?php $latestPurchases = \app\modules\wallet\models\Operation::find()->orderBy(['id' => SORT_DESC])->limit(3)->all() ?>
     <?php foreach ($latestPurchases as $purchase) : ?>
         <div>
-            <label class="label label-warning"><?= date('d-m-Y H:i:s', $purchase->updated_at) ?> | <?= mb_substr($purchase->description, 0, 100) ?></label>
+            <label class="label label-<?= $purchase->sum < 0 ? 'warning' : 'success' ?>"><?= date('d-m-Y H:i:s', $purchase->updated_at) ?> | <?= mb_substr($purchase->description, 0, 100) ?></label>
         </div>
     <?php endforeach; ?>
 </div>
