@@ -24,6 +24,16 @@ $('#operation-iscredit').change(function() {
     $('#credit-form').find('input').val(null);
   }
 });
+//Submit the form by ctrl+enter
+$('#w0').keydown(function (e) {
+    if (e.keyCode === 13 && e.ctrlKey) {   
+        e.preventDefault();
+	    if (confirm('Сохранить?')) {
+	        $(this).submit();
+	    }
+        return false;
+    }
+});
 $('#operation-sum').focus();
 JS;
 $this->registerJs($js);
@@ -39,8 +49,16 @@ if (!$model->isNewRecord && $model->isCredit) {
 <div class="latest-operations">
     <?php $latestPurchases = \app\modules\wallet\models\Operation::find()->orderBy(['id' => SORT_DESC])->limit(3)->all() ?>
     <?php foreach ($latestPurchases as $purchase) : ?>
+        <?php if ($model->id == $purchase->id) {continue;} ?>
         <div>
-            <label class="label label-<?= $purchase->sum < 0 ? 'warning' : 'success' ?>"><?= date('d-m-Y H:i:s', $purchase->updated_at) ?> | <?= mb_substr($purchase->description, 0, 100) ?></label>
+            <?= Html::a(
+                date('d-m-Y H:i:s', $purchase->updated_at) . ' | ' . mb_substr($purchase->description, 0, 100),
+                ['/wallet/operations/update', 'id' => $purchase->id],
+                [
+                    'class' => 'alert-' . ($purchase->sum < 0 ? 'warning' : 'success'),
+                    'target' => '_blank',
+                ]
+            ) ?>
         </div>
     <?php endforeach; ?>
 </div>
