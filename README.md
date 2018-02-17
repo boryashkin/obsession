@@ -1,5 +1,10 @@
 # Life tracker
 
+### Installation
+
+Use the ["obsession app launcher"](../../../obsession-launcher); 
+It contains all instructions for that.
+
 ## Time tracking
 * Create activities
 * Start/stop timers by each activity
