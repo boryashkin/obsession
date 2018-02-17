@@ -2,7 +2,7 @@
 
 ### Installation
 
-Use the ["obsession app launcher"](../../../obsession-launcher); 
+Use the ["obsession app launcher"](../../../obsesson-installator); 
 It contains all instructions for that.
 
 ## Time tracking
